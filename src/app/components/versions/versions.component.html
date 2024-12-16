@@ -1,0 +1,77 @@
+<div class="dialogStyle w100">
+  <div class="dialogTitle">
+    <span class="modal-title">#{{ calculation.calc_id }} - {{ calculation.name }}</span>
+  </div>
+  <div class="dialogInfo clearAfter marginCenter w100">
+    <div class="dialogScroll">
+      <div class="field blockField" *ngIf="calculations.length > 0">
+        <label class="label">{{'CALCULATION_DATA.VERSIONS' | translate | uppercase }}</label>
+        <div class="tableStyle marginCenter h500">
+          <div class="fixedTable">
+            <table border="0" class="even fixed">
+              <thead>
+                <tr>
+                  <th>
+                    <p>
+                      Version
+                      <span class="sort-icon" [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'version'}"
+                        (click)="toggleProjectsSortOption($event, 'version')">
+                        <i class="part-up fa fa-caret-up"></i>
+                        <i class="part-down fa fa-caret-down"></i>
+                      </span>
+                    </p>
+                  </th>
+                  <th>
+                    <p>
+                      {{'PROJECT_DATA.date' | translate}}
+                      <span class="sort-icon desc"
+                        [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'created_at'}"
+                        (click)="toggleProjectsSortOption($event, 'created_at')">
+                        <i class="part-up fa fa-caret-up"></i>
+                        <i class="part-down fa fa-caret-down"></i>
+                      </span>
+                    </p>
+                  </th>
+                  <th>
+                    <p>{{'CALCULATION_DATA.vers_description' | translate}}</p>
+                  </th>
+                  <th>
+                    <p>
+                      {{'CALCULATION_DATA.sensor' | translate}}
+                      <span class="sort-icon"
+                        [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'sensor'}"
+                        (click)="toggleProjectsSortOption($event, 'sensor')">
+                        <i class="part-up fa fa-caret-up"></i>
+                        <i class="part-down fa fa-caret-down"></i>
+                      </span>
+                    </p>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let calc of calculations | filterCalculations: calculation?.calc_id; index as i; odd as isOdd; even as isEven" [class.even]="isOdd"
+                  (click)="openVersion(calc)">
+                  <td><a title="Open">{{calc.version}}</a></td>
+                    <td><a title="Open">{{ calc.created_at | toProjectDateFormat }}</a></td>
+                    <td><a title="Open">
+                        <span
+                          *ngIf="calc.vers_description?calc.vers_description.length <= 20:''">{{calc.vers_description}}</span>
+                        <span *ngIf="calc.vers_description?calc.vers_description.length > 20:''"
+                          ngbTooltip="{{calc.vers_description}}">
+                          {{calc.vers_description | slice:0:20}}...
+                        </span>
+                      </a></td>
+                    <td><a title="Open">{{calc.sensor}}</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="float-right mt-3">
+    <button type="button" class="btn dark mb-4 mr-3 login-button"
+      (click)="closeModal()">{{ 'BUTTONS.cancel' | translate }}</button>
+  </div>
+</div>

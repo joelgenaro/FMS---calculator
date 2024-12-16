@@ -1,0 +1,34 @@
+.options-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  max-height: 460px;
+  overflow: auto;
+}
+
+.option-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.option-code {
+  background-color: transparent;
+  transition: background-color 0.2 ease-in;
+  width: 150px;
+  padding: 3px 0;
+  text-align: center;
+}
+
+.option-code.checked {
+  background-color: #b9c832;
+  color: #ffffff;
+}
+
+.option-description {
+  text-align: center;
+}
+
+label {
+  padding: 0;
+}

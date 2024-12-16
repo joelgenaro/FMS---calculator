@@ -1,0 +1,162 @@
+<ng-template #content let-d="dismiss">
+  <div class="dialogStyle w675 loginDialog ng-scope">
+    <div class="dialogBanner clearAfter">
+      <div class="infoArea">
+        <h2 id="ngdialog1-aria-labelledby"><strong>FMS</strong> Calculator</h2>
+        <h3>V.3.5</h3>
+      </div>
+      <div class="imgArea"></div>
+    </div>
+    <div class="dialogInfo clearAfter">
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="loginForm">
+        <div class="form-group row">
+          <label class="col-5 p-0">{{ 'FIELDS_ETC.email' | translate }}</label>
+          <input type="text" class="form-control col-7"
+            [ngClass]="{'is-invalid':!loginForm.controls.emailAddress.valid && (loginForm.controls.emailAddress.dirty || submitAttempt),'is-valid':loginForm.controls.emailAddress.valid}"
+            formControlName="emailAddress" placeholder="{{ 'FIELDS_ETC.email' | translate }}">
+          <div class="invalid-feedback col-12" *ngIf="loginForm.get('emailAddress').hasError('required')">
+            {{'VALIDATION.required'|translate}}</div>
+          <div class="invalid-feedback col-12" *ngIf="loginForm.get('emailAddress').hasError('email')">
+            {{'VALIDATION.email'|translate}}</div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 p-0">{{ 'FIELDS_ETC.password' | translate }}</label>
+          <input type="password" class="form-control col-7"
+            [ngClass]="{'is-invalid':!loginForm.controls.password.valid && (loginForm.controls.password.dirty || submitAttempt),'is-valid':loginForm.controls.password.valid}"
+            formControlName="password" placeholder="{{ 'FIELDS_ETC.password' | translate }}">
+          <div class="invalid-feedback col-12" *ngIf="loginForm.get('password').hasError('required')">
+            {{'VALIDATION.required'|translate}}
+          </div>
+          <div class="invalid-feedback col-12" *ngIf="loginForm.get('password').hasError('minlength')">
+            {{'VALIDATION.password'|translate}}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-secondary float-right mb-4 login-button" [disabled]="!loginForm.valid || submitting">{{ 'HEADER.login' | translate }} <i class="fa fa-spinner fa-spin"
+            *ngIf="submitting"></i></button>
+      </form>
+      <div class="loginButtons">
+        <div class="field" style="position: relative;">
+          <select [(ngModel)]="language" class="languages" (ngModelChange)="onLanguageChange()">
+            <option *ngFor="let lang of languages" [value]="lang.code">{{lang.language}}</option>
+          </select>
+          <img class="select-dropdown-icon" width="16" height="16" src="../../assets/img/icons/dropdown.svg" alt="">
+        </div>
+        <div class="field">
+          <button class="btn btn-secondary login-button"
+            (click)="signupDialog(registerContent)">{{ 'HEADER.register' | translate }}</button>
+        </div>
+        <div class="field">
+          <button class="btn btn-secondary login-button"
+            (click)="close_dialog()">{{ 'FIELDS_ETC.continue_without' | translate }}</button>
+        </div>
+        <div class="field">
+          <button class="btn btn-secondary login-button"
+            (click)="openForgotDialog(forgotcontent)">{{ 'FIELDS_ETC.forgot_password' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #forgotcontent let-d="dismiss">
+  <div class="dialogStyle forgotDialog">
+    <div class="dialogTitle">
+      <span class="modal-title">{{ 'FIELDS_ETC.forgot_password' | translate }}</span>
+      <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="dialogInfo clearAfter">
+      <form [formGroup]="forgotForm">
+        <div class="form-group row">
+          <label class="col-5 p-0">{{ 'FIELDS_ETC.email' | translate }}</label>
+          <input type="text" class="form-control col-7"
+            [ngClass]="{'is-invalid':!forgotForm.controls.emailAddress.valid && (forgotForm.controls.emailAddress.dirty || submitAttempt),'is-valid':forgotForm.controls.emailAddress.valid}"
+            formControlName="emailAddress" placeholder="{{ 'FIELDS_ETC.email' | translate }}">
+          <div class="invalid-feedback col-12" *ngIf="forgotForm.get('emailAddress').hasError('required')">
+            {{'VALIDATION.required'|translate}}</div>
+          <div class="invalid-feedback col-12" *ngIf="forgotForm.get('emailAddress').hasError('email')">
+            {{'VALIDATION.email'|translate}}</div>
+        </div>
+        <button type="button" class="btn btn-secondary float-right mb-4 login-button" (click)="forgotPassword()"
+          [disabled]="!forgotForm.valid || submitting">{{ 'HEADER.send' | translate }} <i
+            class="fa fa-spinner fa-spin" *ngIf="submitting"></i></button>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<ng-template #registerContent let-d="dismiss">
+  <div class="dialogStyle register">
+    <div class="dialogTitle">
+      <span class="modal-title">{{ 'HEADER.register' | translate }}</span>
+      <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="dialogInfo marginCenter w475">
+      <form [formGroup]="registerForm">
+        <div class="form-group row">
+          <label class="col-5">{{ 'FIELDS_ETC.email' | translate }}</label>
+          <input type="text" class="form-control col-7"
+            [ngClass]="{'is-invalid':!registerForm.controls.emailAddress.valid && (registerForm.controls.emailAddress.dirty || submitAttempt),'is-valid':registerForm.controls.emailAddress.valid}"
+            formControlName="emailAddress">
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('emailAddress').hasError('required')">
+            {{'VALIDATION.required'|translate}}</div>
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('emailAddress').hasError('email')">
+            {{'VALIDATION.email'|translate}}</div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5">{{ 'FIELDS_ETC.first_name' | translate }}</label>
+          <input type="text" class="form-control col-7"
+            [ngClass]="{'is-invalid':!registerForm.controls.firstName.valid && (registerForm.controls.firstName.dirty || submitAttempt),'is-valid':registerForm.controls.firstName.valid}"
+            formControlName="firstName">
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('firstName').hasError('required')">
+            {{'VALIDATION.required'|translate}}</div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5">{{ 'FIELDS_ETC.last_name' | translate }}</label>
+          <input type="text" class="form-control col-7"
+            [ngClass]="{'is-invalid':!registerForm.controls.lastName.valid && (registerForm.controls.lastName.dirty || submitAttempt),'is-valid':registerForm.controls.lastName.valid}"
+            formControlName="lastName">
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('lastName').hasError('required')">
+            {{'VALIDATION.required'|translate}}</div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5">{{ 'COMPANY_DATA.company' | translate }}</label>
+          <input type="text" class="form-control col-7"
+            [ngClass]="{'is-invalid':!registerForm.controls.company.valid && (registerForm.controls.company.dirty || submitAttempt),'is-valid':registerForm.controls.company.valid}"
+            formControlName="company">
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('company').hasError('required')">
+            {{'VALIDATION.required'|translate}}</div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5">{{ 'FIELDS_ETC.phone' | translate }}</label>
+          <input type="text" class="form-control col-7" formControlName="phone">
+        </div>
+        <div class="form-group row">
+          <label class="col-5">{{ 'FIELDS_ETC.password' | translate }}</label>
+          <input type="password" class="form-control col-7"
+            [ngClass]="{'is-invalid':!registerForm.controls.password.valid && (registerForm.controls.password.dirty || submitAttempt),'is-valid':registerForm.controls.password.valid}"
+            formControlName="password">
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('password').hasError('required')">
+            {{'VALIDATION.required'|translate}}
+          </div>
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('password').hasError('minlength')">
+            {{'VALIDATION.password'|translate}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5">{{ 'FIELDS_ETC.repeat_password' | translate }}</label>
+          <input type="password" class="form-control col-7"
+            [ngClass]="{'is-invalid':!registerForm.controls.repeatPassword.valid && (registerForm.controls.repeatPassword.dirty || submitAttempt),'is-valid':registerForm.controls.repeatPassword.valid}"
+            formControlName="repeatPassword">
+          <div class="invalid-feedback col-12" *ngIf="registerForm.get('repeatPassword').hasError('required')">
+            {{'VALIDATION.required'|translate}}
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary float-right mb-4 register-button" (click)="register()"
+          [disabled]="!registerForm.valid || submitting">{{ 'HEADER.register' | translate }} <i
+            class="fa fa-spinner fa-spin" *ngIf="submitting"></i></button>
+      </form>
+    </div>
+  </div>
+</ng-template>

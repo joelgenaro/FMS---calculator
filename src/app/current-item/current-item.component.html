@@ -1,0 +1,44 @@
+<div class="currentItem">
+  <div class="field">
+    <span class="calcValue">
+      <strong>{{ language === 'locale-en_EN' ? selectedSensor?.name : selectedSensor?.name_de}}</strong>
+    </span>
+  </div>
+  <div class="itemImg" *ngIf="selectedSensor?.image">
+    <img [src]="selectedSensor?.image" alt="current item image">
+  </div>
+  <div class="column labelOnly size40 mb20">
+    <div class="group">
+      <div class="field mt15">
+        <label class="label">FBmin</label>
+        <span class="calcValue">
+          <strong>{{ forces.min_material_tension.values.fb_min?.toFixed(2) }} {{ units | selectedSystemFactor: 'N' }}</strong>
+        </span>
+      </div>
+      <div class="field">
+        <label class="label">FBmax</label>
+        <span class="calcValue">
+          <strong>{{ forces.max_material_tension.values.fb_max?.toFixed(2) }} {{ units | selectedSystemFactor: 'N' }}</strong>
+        </span>
+      </div>
+      <div class="field">
+        <label class="label">FG</label>
+        <span class="calcValue">
+          <strong>{{ forces.roller_weight.values.force?.toFixed(2) }} {{ units | selectedSystemFactor: 'N' }}</strong>
+        </span>
+      </div>
+      <div class="field">
+        <label class="label">FMmin</label>
+        <span class="calcValue">
+          <strong>{{ forces.f_min?.toFixed(2) }} {{ units | selectedSystemFactor: 'N' }}</strong>
+        </span>
+      </div>
+      <div class="field">
+        <label class="label">FMmax</label>
+        <span class="calcValue">
+          <strong>{{ forces.f_max?.toFixed(2)}} {{ units | selectedSystemFactor: 'N' }}</strong>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="dialogStyle w-100">
+  <div class="dialogTitle">
+    <span>{{'SENSOR_TYPE.details' | translate}}</span>
+    <button type="button" class="close" aria-label="Close" (click)="close_dialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="dialogInfo clearAfter marginCenter w100">
+    <img width="600" src="{{data.sensor_type_detail_current.image}}" alt="Mounting Style">
+  </div>
+  <div class="dialogMeta clearAfter mt-3">
+    <ul class="clearAfter">
+      <li class="floatLeft ml-4">
+        <a class="btn primary" *ngIf="data.sensor_type_detail_current.en && data.selectedLanguage == 'locale-en_EN'"
+          href="{{data.sensor_type_detail_current.en}}" target="_blank">{{'SENSOR_TYPE.datasheet' | translate}}</a>
+        <a class="btn primary" *ngIf="data.sensor_type_detail_current.de && data.selectedLanguage == 'locale-de_DE'"
+          href="{{data.sensor_type_detail_current.de}}" target="_blank">{{'SENSOR_TYPE.datasheet' | translate}}</a>
+      </li>
+      <li class="floatRight"><button class="btn dark mr-4 mb-4" (click)="close_dialog()">Close</button></li>
+    </ul>
+  </div>
+</div>

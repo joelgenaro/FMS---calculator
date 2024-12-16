@@ -1,0 +1,11 @@
+<ul class="grid">
+  <li *ngFor="let sensor_type of (sensorTypes | sensorFilter: currentFilter?.value) | sensorOrder">
+    <label>
+      <input type="radio" name="selected_sensor" [checked]="selectedSensor?.id === sensor_type.id" />
+      <span class="itemName">{{ language === 'locale-en_EN' ? sensor_type.name : sensor_type.name_de}}</span>
+      <img *ngIf="sensor_type.image" [src]="sensor_type.image" (click)="setSelectedSensor(sensor_type)">
+    </label>
+    <button class="btn dark itemDetails"
+      (click)="openSensorDetails(sensor_type)">{{'SENSOR_TYPE.view_details' | translate}}</button>
+  </li>
+</ul>

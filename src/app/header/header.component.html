@@ -1,0 +1,374 @@
+<app-login></app-login>
+<div>
+  <header>
+    <div class="wrapper">
+      <div>
+        <div class="logoSide clearAfter">
+          <a>
+            <div class="logo clearAfter cursor-pointer">
+              <img src="/assets/img/fms_logo.svg" alt="FMS Calculator">
+            </div>
+          </a>
+          <div class="logoCaption">
+            <a class="iconHover" (click)="openModal(aboutModal,'login-modal')">
+              <span class="label">FMS Calculator</span>
+            </a>
+            <p>
+              <a class="iconHover" (click)="openModal(changelog,'login-modal')">
+                <span class="label align-sub ">Version 3.5</span>
+                <span class="icon">
+                  <img class="defaultIcon" src="/assets/img/icons/default/icon_help.svg" alt="help icon">
+                  <img class="activeIcon" src="/assets/img/icons/active/icon_help.svg" alt="help icon">
+                </span>
+              </a>
+            </p>
+            <p>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <ng-container *ngIf="userAuth && (authService.isLoggedIn |async)">
+          <div class="userInfo clearAfter">{{'HEADER.user' | translate}}:
+            {{ userAuth.first_name.substr(0,1) + '. ' + userAuth.last_name }}&nbsp;
+            <span>
+              {{'HEADER.project' | translate}}:
+            </span>
+            <a class="iconHover" *ngIf="activeProject"
+              (click)="openProjectModal()">
+              <span class="icon">
+                <img class="defaultIcon" src="/assets/img/icons/default/icon_projects.svg" alt="projects icon">
+                <img class="activeIcon" src="/assets/img/icons/active/icon_projects.svg" alt="projects icon">
+                <span class="label">{{ activeProject?.name | slice:0:20 }}</span>&nbsp;&nbsp;
+              </span>
+            </a>
+            <ng-container *ngIf="!activeProject">
+              n/a&nbsp;&nbsp;
+            </ng-container>
+            <span class="column" *ngIf="!activeCalculation">
+              <span class="label">{{'HEADER.calculation' | translate}}: <button type="button" class="btn primary"
+                  (click)="save_calculation_confirmation()">{{'HEADER.create' | translate}}</button></span>
+            </span>
+            <span class="column" *ngIf="activeCalculation">
+              <span class="label">{{'HEADER.calculation' | translate}}:</span>
+              <a class="iconHover" (click)="save_calculation_confirmation()">
+                <span class="icon">
+                  <img class="defaultIcon" src="/assets/img/icons/default/icon_save.svg" alt="save icon">
+                  <img class="activeIcon" src="/assets/img/icons/active/icon_save.svg" alt="save icon">
+                  <span class="label"
+                    *ngIf="activeCalculation?.name?.length > 20">{{ activeCalculation?.name | slice:0:20}}...</span>
+                  <span class="label"
+                    *ngIf="activeCalculation?.name?.length <= 20">{{ activeCalculation?.name}}</span>
+                </span>
+              </a>
+            </span>
+          </div>
+        </ng-container>
+        <div class="navigation">
+          <div class="secondNav clearAfter">
+            <a (click)="open_url(FMSTab.Forces)" class="iconHover" [ngClass]="tab === FMSTab.Forces ? 'active' : ''">
+              <span class="icon">
+                <img class="defaultIcon" src="/assets/img/icons/default/icon_force.svg" alt="force icon">
+                <img class="activeIcon" src="/assets/img/icons/active/icon_force.svg" alt="force icon">
+                <span class="label">{{'FORCES.forces' | translate}}</span>
+              </span>
+            </a>
+            <a (click)="open_url(FMSTab.SensorTypes)" class="iconHover"
+              [ngClass]="tab === FMSTab.SensorTypes ? 'active' : ''">
+              <span class="icon">
+                <img class="defaultIcon" src="/assets/img/icons/default/icon_sensor_type.svg"
+                  alt="sensor type icon">
+                <img class="activeIcon" src="/assets/img/icons/active/icon_sensor_type.svg" alt="sensor type icon">
+                <span class="label">{{'SENSOR_TYPE.sensor_type' | translate}}</span>
+              </span>
+            </a>
+            <a *ngIf="(authService.isLoggedIn |async)" (click)="open_url(FMSTab.Options)" class="iconHover"
+              [ngClass]="{'active': tab === FMSTab.Options, 'disabledButton': !(authService.isLoggedIn |async)}">
+              <span class="icon">
+                <img class="defaultIcon" src="/assets/img/icons/default/icon_options.svg" alt="Options icon">
+                <img class="activeIcon" src="/assets/img/icons/active/icon_options.svg" alt="Options icon">
+                <span class="label">{{'OPTIONS.options' | translate}}</span>
+              </span>
+            </a>
+            <a *ngIf="!(authService.isLoggedIn |async)" (click)="open_url(FMSTab.Options)" class="iconHover "
+              [ngClass]="{'active': tab === FMSTab.Options, 'disabledButton': !(authService.isLoggedIn |async)}" placement="bottom"
+              ngbTooltip="{{'GLOBAL.sensor_not_selected' | translate}}">
+              <span class="icon">
+                <img class="defaultIcon" src="/assets/img/icons/default/icon_options.svg" alt="Options icon">
+                <img class="activeIcon" src="/assets/img/icons/active/icon_options.svg" alt="Options icon">
+                <span class="label">{{'OPTIONS.options' | translate}}</span>
+              </span>
+            </a>
+            <a *ngIf="(authService.isLoggedIn |async)" (click)="open_url(FMSTab.Optimization)" class="iconHover"
+              [ngClass]="{'active': tab === FMSTab.Optimization, 'disabledButton': !(authService.isLoggedIn |async)}" disabled="!(authService.isLoggedIn |async)">
+              <span class="icon">
+                <img class="defaultIcon" src="/assets/img/icons/default/icon_calculator.svg" alt="calculator icon">
+                <img class="activeIcon" src="/assets/img/icons/active/icon_calculator.svg" alt="calculator icon">
+                <span class="label">{{'CALCULATOR.calculator' | translate}}</span>
+              </span>
+            </a>
+            <a *ngIf="!(authService.isLoggedIn |async)" (click)="open_url(FMSTab.Optimization)" class="iconHover"
+              [ngClass]="{'active': tab === FMSTab.Optimization, 'disabledButton': !(authService.isLoggedIn |async)}" disabled="!(authService.isLoggedIn |async)"
+              placement="bottom" ngbTooltip="{{'GLOBAL.sensor_not_selected' | translate}}">
+              <span class="icon">
+                <img class="defaultIcon" src="/assets/img/icons/default/icon_calculator.svg" alt="calculator icon">
+                <img class="activeIcon" src="/assets/img/icons/active/icon_calculator.svg" alt="calculator icon">
+                <span class="label">{{'CALCULATOR.calculator' | translate}}</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="rightMenu">
+        <a class="iconHover" (click)="openModal(settingsContent,'register-modal')">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_basic_settings.svg"
+              alt="basic settings icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_basic_settings.svg"
+              alt="basic settings icon">
+            <span class="label">&nbsp;{{ 'HEADER.settings' | translate }}</span>
+          </span>
+        </a>
+        <a class="iconHover" (click)="openModal(contactModal,'forgot-password')">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_contact_us.svg" alt="contact fms icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_contact_us.svg" alt="contact fms icon">
+            <span class="label">&nbsp;{{ 'HEADER.contact' | translate }}</span>
+          </span>
+        </a>
+        <a (click)="log()" class="iconHover">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_login.svg" alt="logout icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_login.svg" alt="logout icon">
+            <span class="label" *ngIf="(authService.isLoggedIn |async)">&nbsp;{{ 'HEADER.logout' | translate }}</span>
+            <span class="label" *ngIf="!(authService.isLoggedIn |async)">&nbsp;{{ 'HEADER.login' | translate }}</span>
+          </span>
+        </a>
+        <a class="iconHover" (click)="save_calculation_confirmation()"
+          [ngClass]="{'disabledButton': !(authService.isLoggedIn |async), '': (authService.isLoggedIn |async)}">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_save.svg" alt="save icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_save.svg" alt="save icon">
+            <span class="label">&nbsp;{{ 'HEADER.save' | translate }}</span>
+          </span>
+        </a>
+        <a class="iconHover" (click)="goToProjects()" [ngClass]="{'disabledButton': !(authService.isLoggedIn |async), '': (authService.isLoggedIn |async)}">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_projects.svg" alt="projects icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_projects.svg" alt="projects icon">
+            <span class="label">&nbsp;{{ 'HEADER.open' | translate }}</span>
+          </span>
+        </a>
+        <a (click)="openNewCalculationModal(newCalculationModal)" class="iconHover">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_new.svg" alt="new icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_new.svg" alt="new icon">
+            <span class="label">&nbsp;{{ 'HEADER.new' | translate }}</span>
+          </span>
+        </a>
+        <a class="iconHover" id="gain-calc" (click)="gain_calculator()">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_gain.svg" alt="help icon">
+            <img class="activeIcon" src="/assets/img/icons/default/icon_gain.svg" alt="help icon">
+            <span class="label">Gain Calculator</span>
+          </span>
+        </a>
+        <a (click)="print_pdf()" [class.disabledButton]="!(authService.isLoggedIn | async)" class="iconHover" id="print_pdf">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_print.svg" alt="print icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_print.svg" alt="print icon">
+            <span class="label">{{ 'HEADER.print' | translate}}</span>
+          </span>
+        </a>
+        <a (click)="openShareProjectModal()" [class.disabledButton]="!(authService.isLoggedIn | async)" class="iconHover" placement="left">
+          <span class="icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_share.svg" alt="share icon">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_share.svg" alt="share icon">
+            <span class="label">{{ 'HEADER.share' | translate}}</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <ng-template #aboutModal let-d="dismiss">
+    <div class="dialogStyle w675 loginDialog">
+      <div class="dialogBanner clearAfter">
+        <div class="infoArea">
+          <h2 id="ngdialog1-aria-labelledby"><strong>FMS</strong> Calculator</h2>
+          <h3>V.3.2</h3>
+        </div>
+        <div class="imgArea"></div>
+      </div>
+      <div class="dialogInfo clearAfter">
+        <p id="ngdialog5-aria-describedby" class="ng-binding">{{'ABOUT.first_section' | translate}}</p>
+        <p class="mt15 ng-binding">{{'ABOUT.second_section' | translate}}</p>
+        <p class="mt15 ng-binding">{{'ABOUT.third_section' | translate}}</p>
+        <p class="mt20">© FMS Force Measuring Systems AG</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #changelog let-d="dismiss">
+    <div class="dialogStyle w675 loginDialog">
+      <div class="dialogBanner clearAfter">
+        <div class="infoArea">
+          <h2 id="ngdialog1-aria-labelledby"><strong>FMS</strong> Calculator</h2>
+          <h3>V.3.5</h3>
+        </div>
+        <div class="imgArea"></div>
+      </div>
+      <br />
+      <a href="https://www.fms-technology.com/fileadmin/user_upload/Dokumente/Manual_Calculator_3.2_01.pdf"
+        target="_blank" style="color:#FF0000;" class="ng-binding">{{'CHANGELOG.manual' | translate}}</a>
+      <div class="dialogInfo clearAfter">
+        <p class="mt15 ng-binding" style="font-weight: bold;">{{ 'CHANGELOG.3_5_releaseNotes' | translate }}</p>
+        <p class="mt15 ng-binding">{{ 'CHANGELOG.3_5_first' | translate }}</p>
+        <p class="mt15 ng-binding">{{ 'CHANGELOG.3_5_second' | translate }}</p>
+        <p class="mt15 ng-binding">{{ 'CHANGELOG.3_5_third' | translate }}</p>
+        <p class="mt15 ng-binding">{{ 'CHANGELOG.3_5_fourth' | translate }}</p>
+        <p class="mt15 ng-binding" style="font-weight:bold" id="ngdialog2-aria-describedby">
+          {{'CHANGELOG.3_4_first' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_4_second' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_4_third' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_4_fourth' | translate}}</p>
+        <p class="mt15 ng-binding" style="font-weight:bold">{{'CHANGELOG.3_3_first' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_3_second' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_3_third' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_3_fourth' | translate}}</p>
+        <p class="mt15 ng-binding" style="font-weight:bold">{{'CHANGELOG.3_2_first' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_2_second' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_2_third' | translate}}</p>
+        <p class="mt15 ng-binding">{{'CHANGELOG.3_2_fourth' | translate}}</p>
+        <p class="mt20">© FMS Force Measuring Systems AG</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #settingsContent let-d="dismiss">
+    <div class="dialogStyle register">
+      <div class="dialogTitle">
+        <span class="modal-title">{{ 'HEADER.settings' | translate }}</span>
+        <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="dialogInfo marginCenter w475">
+        <div class="form-group row">
+          <label class="col-5">{{ 'GLOBAL.select_a_metric' | translate }}</label>
+          <select class="form-control col-7" [(ngModel)]="selectedUnit">
+            <option value='metric'>{{ 'Units.metric' | translate }}</option>
+            <option value='us_units'> {{ 'Units.usUnits' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group row" *ngIf="showingExpertMode">
+          <label class="col-5">{{'GLOBAL.expert_mode' | translate}}</label>
+          <select class="form-control col-7" [(ngModel)]="mode">
+            <option *ngFor="let opt of mode_options" [value]="opt.value">{{ 'GLOBAL.' + opt.key | translate }}</option>
+          </select>
+        </div>
+        <div class="form-group row">
+          <label class="col-5">{{ 'GLOBAL.select_a_language' | translate }}</label>
+          <select class="form-control col-7" [(ngModel)]="selectedLanguage">
+            <option value='locale-en_EN'>English </option>
+            <option value='locale-de_DE'>Deutsch</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-secondary float-right mb-4 register-button"
+          (click)="changeSettings()">{{ 'BUTTONS.save' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #contactModal let-d="dismiss">
+    <div class="dialogStyle">
+      <div class="dialogTitle">
+        <span class="modal-title">{{ 'HEADER.contact' | translate }}</span>
+        <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="dialogInfo clearAfter">
+        <p id="ngdialog5-aria-describedby" class="ng-binding">{{'CONTACT_FMS.general_info' | translate}}</p>
+        <ul class="mt20 pl-0">
+          <strong class="ng-binding">Headquarter</strong>
+          <li>
+            <p>FMS Force Measuring Systems AG</p>
+          </li>
+          <li>
+            <p>Aspstrasse 6</p>
+          </li>
+          <li>
+            <p>8154 Oberglatt (Switzerland)</p>
+          </li>
+          <li>
+            <p><a target="_blank" href="tel:+41448528080">+41 44 852 80 80</a></p>
+          </li>
+          <li>
+            <p><a target="_blank" href="mailto:info@fms-ag.ch">info@fms-technology.com</a></p>
+          </li>
+        </ul>
+
+        <ul class="mt20 pl-0 pb-2">
+          <strong>FMS USA</strong>
+          <li>
+            <p>FMS USA, Inc.</p>
+          </li>
+          <li>
+            <p>2155 Stonington Avenue, Suite 119</p>
+          </li>
+          <li>
+            <p> Hoffman Estates, IL 60169</p>
+          </li>
+          <li>
+            <p><a target="_blank" href="tel:+18475194400">+1 847 519 4400</a></p>
+          </li>
+          <li>
+            <p><a target="_blank" href="mailto:fmsusa@fms-technology.com">fmsusa@fms-technology.com</a></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #newCalculationModal let-d="dismiss">
+    <div class="dialogStyle w550">
+      <div class="dialogTitle">
+        <span class="modal-title">{{'CALCULATION_DATA.new_calculation' | translate}}</span>
+        <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="dialogInfo clearAfter">
+        {{'GLOBAL.values_will_be_deleted' | translate}}
+        <div class="float-right mt-3">
+          <button type="button" class="btn dark  mb-4 login-button mr-3"
+            (click)="navigateToNewCalculation()">{{ 'BUTTONS.ok' | translate }}</button>
+          <button type="button" class="btn dark mb-4 login-button"
+            (click)="d('cancel')">{{ 'BUTTONS.cancel' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #shareProjectModal let-d="dismiss">
+  <div class="dialogStyle w550">
+    <div class="dialogTitle">
+      <span class="modal-title">{{'HEADER.share' | translate}}</span>
+      <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="shareProjectForm">
+      <input class="share-input" type="email" placeholder="{{'PROJECT_DATA.ph_email' | translate}}" formControlName="email">
+      <input class="share-input" type="text" placeholder="{{'PROJECT_DATA.ph_comment' | translate}}" formControlName="comment">
+      <span class="checkStyle"><input type="checkbox" formControlName="sendEmail">{{'PROJECT_DATA.per_mail' | translate}}</span>
+        <button type="button" aria-label="Close dialog" (click)="shareProject()"
+          class="btn dark ml20" [disabled]="shareProjectForm.invalid">
+          {{'HEADER.share' | translate}}
+        </button>
+    </form>
+  </div>
+</ng-template>

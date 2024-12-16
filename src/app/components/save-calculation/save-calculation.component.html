@@ -1,0 +1,59 @@
+<div class="dialogStyle w100">
+  <div class="dialogTitle">
+    <span>{{'CALCULATION_DATA.save_calculation' | translate}}</span>
+  </div>
+  <form [formGroup]="saveCalculationForm" class="dialogInfo clearAfter marginCenter w100">
+    <div class="field rightInfo" *ngIf="activeCalculation">
+      <label class="label">
+        <div class="radioStyle">
+          <label>
+            <input type="radio" name="which_calculator" [(ngModel)]="which_calculator" value="new" (ngModelChange)="checkDisabled()" [ngModelOptions]="{ standalone: true }">
+            <span class="checkIcon"></span>
+            <span class="checkLabel"><strong>{{'CALCULATION_DATA.under_new' | translate}}</strong></span>
+          </label>
+        </div>
+      </label>
+
+      <label class="label">
+        <div class="radioStyle">
+          <label>
+            <input type="radio" name="which_calculator" [(ngModel)]="which_calculator" value="same" (ngModelChange)="checkDisabled()" [ngModelOptions]="{ standalone: true }">
+            <span class="checkIcon"></span>
+            <span class="checkLabel"><strong>{{'CALCULATION_DATA.under_same' | translate}}</strong></span>
+          </label>
+        </div>
+      </label>
+    </div>
+    <div class="field">
+      <label class="label">{{'CALCULATION_DATA.name' | translate}}</label>
+      <input formControlName="calculationName" type="text" [readonly]="which_calculator == 'same'">
+    </div>
+    <div class="field">
+      <label class="label">{{'CALCULATION_DATA.attach' | translate}}</label>
+      <select formControlName="projectId">
+        <option value="">{{ 'PROJECT_DATA.new' | translate }}</option>
+        <option *ngFor="let item of projects" [ngValue]="item.id">{{item.name}}</option>
+      </select>
+    </div>
+    <div class="field" *ngIf="!activeProject">
+      <label class="label">{{'CALCULATION_DATA.project_name' | translate}}</label>
+      <input formControlName="newProjectName" type="text">
+    </div>
+    <div class="field blockField">
+      <label class="label">{{'CALCULATION_DATA.description' | translate}}</label>
+      <textarea formControlName="calculationDescription" rows="8" cols="60"></textarea>
+    </div>
+    <div *ngIf="activeCalculation" class="field blockField">
+      <label class="label">{{'CALCULATION_DATA.description_changes' | translate}}</label>
+      <textarea formControlName="changesDescription" rows="8" cols="60"></textarea>
+    </div>
+  </form>
+  <div class="float-right mt-3">
+    <button aria-label="Close dialog" (click)="close_dialog()" class="btn dark mr-3 mb-4">
+      {{'BUTTONS.cancel' | translate}}
+    </button>
+    <button (click)="save_calculation()" class="btn dark mr-3 mb-4" [disabled]="isSaved">
+      {{'BUTTONS.save' | translate}}
+    </button>
+  </div>
+</div>

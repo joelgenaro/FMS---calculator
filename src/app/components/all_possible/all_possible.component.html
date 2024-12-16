@@ -1,0 +1,54 @@
+<div class="dialogStyle w-100">
+  <div class="dialogTitle">
+    <span>{{'OPTIONS.all_possible' | translate}}</span>
+    <button type="button" class="close" aria-label="Close" (click)="close_dialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="dialogInfo clearAfter">
+    <div class="tableStyle projectsTable marginCenter h500">
+      <div class="fixedTable">
+        <table border="0" class="even fixed">
+          <thead>
+            <tr>
+              <th>
+                <p>
+                  {{'CALCULATOR.sensor_size' | translate}}
+                  <a class="iconHover sortIcon">
+                    <span class="icon">
+                      <img class="activeIcon" src="/assets/img/icons/active/icon_table_sort.svg" alt="left icon">
+                      <img class="defaultIcon" src="/assets/img/icons/default/icon_table_sort.svg" alt="left icon">
+                    </span>
+                  </a>
+                </p>
+              </th>
+              <th>
+                <p>
+                  {{'CALCULATOR.nominal_force' | translate}}
+                  <a class="iconHover sortIcon">
+                    <span class="icon">
+                      <img class="activeIcon" src="/assets/img/icons/active/icon_table_sort.svg" alt="left icon">
+                      <img class="defaultIcon" src="/assets/img/icons/default/icon_table_sort.svg" alt="left icon">
+                    </span>
+                  </a>
+                </p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let entry of ((allPossibleNominalForces$ | async) | filterAllPossible: (forces$ | async): (selectedSensor$ | async): (selectedSize$ | async): (selectedJournal$ | async): (units$ | async)) | sort: '': true" (click)="setPossibleData(entry)">
+              <td>{{ entry.sensorSize.name }}</td>
+              <td>{{ entry.nominalForce.force }}N</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="dialogMeta clearAfter mb-3 mt-3 mr-3">
+    <ul class="floatRight clearAfter">
+      <li class="floatLeft"><button (click)="close_dialog()"
+          class="btn dark ml20">{{'BUTTONS.cancel' | translate}}</button></li>
+    </ul>
+  </div>
+</div>

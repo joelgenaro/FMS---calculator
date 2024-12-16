@@ -1,0 +1,114 @@
+<div class="loader" *ngIf="loader"><img src="/assets/img/loading.gif" /></div>
+<app-header
+  [calculation_data]="calculation_data"
+  [tab]="tab"
+  [current_token]="projectToken"
+  [selectedSensor]="selectedSensor$ | async"
+  [forces]="forces$ | async"
+  [selectedNominalForce]="selectedNominalForce$ | async"
+  [activeProject]="activeProject$ | async"
+  [activeCalculation]="activeCalculation$ | async"
+  [calculations]="calculations"
+  (saveCalculation)="save_calculation($event)"
+  (units)="getUnits($event)"
+  (tabs)="getTabs($event)"
+  (deleteCalculation)="delete_calculation($event)"
+  (gainCalculator)="gaincalculator($event)"
+  (saveProject)="save_project($event)"
+  (sendProject)="send_project($event)"
+  (projectModalOpened)="openActiveProject()"
+  (goToStart)="goToStart($event)"
+  (selectedModeChanged)="setExpertMode($event)"
+  (printPdf)="print_pdf()"
+  (newCalculation)="new_calculation()"
+>
+</app-header>
+<section class="marketing" id="calc_ctrl" *ngIf="tab">
+  <section class="content" id="includes">
+    <div id="main">
+      <!-- drawing -->
+      <app-forces-container
+        *ngIf="tab === 'drawing'"
+        [units]="units$ | async"
+        [forces]="forces$ | async"
+        [language]="language$ | async"
+        [selectedSensor]="selectedSensor$ | async"
+        [selectedNominalForce]="selectedNominalForce$ | async"
+        [isExpertModeEnabled]="isExpertModeEnabled$ | async"
+        [expertModeNominalForce]="expertModeNominalForce$ | async"
+        [selectedOrientation]="sensorOrientation$ | async"
+        (forcesDataChanged)="setForces($event)"
+        (tabOpened)="open_tab($event.tab)"
+      ></app-forces-container>
+      <!-- sensor -->
+      <app-sensor-type-container
+        *ngIf="tab === 'sensor_types'"
+        [currentFilter]="currentFilter$ | async"
+        [language]="language$ | async"
+        [units]="units$ | async"
+        [forces]="forces$ | async"
+        [selectedSensor]="selectedSensor$ | async"
+        [isLoggedIn]="isLoggedIn$ | async"
+        (selectedSensorChanged)="setSelectedSensor($event)"
+        (tabOpened)="open_tab($event.tab)"
+      ></app-sensor-type-container>
+      <!--  options -->
+      <app-options-container
+        *ngIf="tab === 'options'"
+        [language]="language$ | async"
+        [forces]="forces$ | async"
+        [units]="units$ | async"
+        [selectedSensor]="selectedSensor$ | async"
+        [currentToken]="projectToken"
+        (tabOpened)="open_tab($event.tab)"
+        (selectedHOptionsChanged)="setSelectedHOptions($event)"
+        (commentChanged)="setComment($event)"
+      ></app-options-container>
+      <!-- calculator -->
+      <app-optimization-container
+        *ngIf="tab === 'calculator'"
+        [language]="language$ | async"
+        [units]="units$ | async"
+        [forces]="forces$ | async"
+        [selectedSensor]="selectedSensor$ | async"
+        [selectedSize]="selectedSizeId$ | async"
+        [selectedSensorSizes]="selectedSensorSizes$ | async"
+        [selectedSensorJournalTypes]="selectedSensorJournalTypes$ | async"
+        [selectedSizeNominalForces]="selectedSizeNominalForces$ | async"
+        [allPossibleNominalForces]="
+          allPossibleNominalForcesDropdownMenu$ | async
+        "
+        [expertModeNominalForce]="expertModeNominalForce$ | async"
+        [sensorOrientation]="sensorOrientation$ | async"
+        [productCode]="productCode$ | async"
+        [selectedNominalForce]="selectedNominalForce$ | async"
+        [warnings]="warnings$ | async"
+        [selectedSizeBearings]="selectedSizeBearings$ | async"
+        [drawingStyles]="drawingStyles$ | async"
+        [plugOrientation]="plugOrientation$ | async"
+        [selectedJournal]="selectedJournal$ | async"
+        [mounting]="mounting$ | async"
+        [mountingOrientationOptions]="mountingOrientationOptions$ | async"
+        [material]="material$ | async"
+        [isExpertModeEnabled]="isExpertModeEnabled$ | async"
+        [materials]="materials$ | async"
+        (sensorSizeChanged)="setSelectedSize($event)"
+        (nominalForceChanged)="setSelectedNominalForce($event)"
+        (sensorOrientationChanged)="setSensorOrientation($event)"
+        (allPossibleClicked)="openAllPossibleModal()"
+        (plugOrientationChanged)="setPlugOrientation($event)"
+        (expertModeNominalForceChanged)="setExpertModeNominalForce($event)"
+        (mountingChanged)="setMounting($event)"
+        (materialChanged)="setMaterial($event)"
+        (proposalClicked)="autoProposal()"
+        (tabOpened)="open_tab($event.tab)"
+      ></app-optimization-container>
+      <!--  projects -->
+      <div *ngIf="tab === 'projects'" class="container">
+        <app-projects
+          (getProject)="openProjectFromTemplate($event?.token)"
+        ></app-projects>
+      </div>
+    </div>
+  </section>
+</section>

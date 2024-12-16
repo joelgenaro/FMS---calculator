@@ -1,0 +1,61 @@
+<div style="display: flex; padding: 20px;">
+  <div class="filter">
+    <div class="filterTitle mb20">
+      <strong>Filter</strong>
+    </div>
+    <div class="field select" style="position: relative;">
+      <label class="label w100">{{'FORCES.bearing' | translate}}</label>
+      <select class="w100" [formControl]="bearingFilterControl" search-enabled="false">
+        <option *ngFor="let item of bearingFilters" [value]="item.value">
+          {{ item.name | translate }}
+        </option>
+      </select>
+      <img class="select-dropdown-icon" width="16" height="16" src="../../assets/img/icons/dropdown.svg" alt="">
+    </div>
+    <a href="https://www.fms-technology.com/fileadmin/user_upload/Dokumente/Datasheet_force_sensors_fms.pdf" target="_blank" *ngIf="language === 'locale-en_EN'">
+      <span class="icon">
+        <img width="32" height="32" style="width: 32px; height: 32px;" src="/assets/img/pdf-download.png" alt="pdf icon">
+        <span class="label" style="font-size: 15px;">Overview FMS Force Sensors</span>
+      </span>
+    </a>
+    <a href="https://www.fms-technology.com/fileadmin/user_upload/Dokumente/Datenblatt_Kraftaufnehmer_fms.pdf" target="_blank" *ngIf="language === 'locale-de_DE'">
+      <span class="icon" style="white-space: nowrap;">
+        <img width="32" height="32" style="width: 32px; height: 32px;" src="/assets/img/pdf-download.png" alt="pdf icon">
+        <span class="label" style="font-size: 15px;">Übersicht FMS Kraftaufnehmer</span>
+      </span>
+    </a>
+  </div>
+  <div class="itemsGrid">
+    <div class="changeView">
+      <ul>
+        <li class="iconHover" [ngClass]="{ 'active': listView === 'table' }">
+          <button class="circleBtn icon icon-35" (click)="setListView('table')">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_table_view.svg" alt="table icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_table_view.svg" alt="table icon">
+          </button>
+        </li>
+        <li class="iconHover" [ngClass]="{'active': listView === 'grid'}">
+          <button class="circleBtn icon icon-35" (click)="setListView('grid')">
+            <img class="activeIcon" src="/assets/img/icons/active/icon_grid_view.svg" alt="grid icon">
+            <img class="defaultIcon" src="/assets/img/icons/default/icon_grid_view.svg" alt="grid icon">
+          </button>
+        </li>
+      </ul>
+    </div>
+    <app-sensor-type-grid-view [hidden]="listView !== 'table'" [currentFilter]="currentFilter" [listView]="listView" [sensorTypes]="sensorTypes" [language]="language" [selectedSensor]="selectedSensor" (selectedSensorChanged)="setSelectedSensor($event)"></app-sensor-type-grid-view>
+    <app-sensor-type-table-view [hidden]="listView !== 'grid'" [currentFilter]="currentFilter" [listView]="listView" [sensorTypes]="sensorTypes" [language]="language" [selectedSensor]="selectedSensor" (sensorDetailsOpened)="openSensorDetailsModal($event)" (selectedSensorChanged)="setSelectedSensor($event)"></app-sensor-type-table-view>
+  </div>
+  <app-current-item [language]="language" [units]="units" [selectedSensor]="selectedSensor" [forces]="forces"></app-current-item>
+</div>
+<div class="pageNav text-right">
+  <a class="btn primary" (click)="openTab(FMSTab.Forces, 'tab')">{{'BUTTONS.back' | translate}}</a>
+  <a class="btn primary ml20" (click)="openTab(FMSTab.Options,'tab')"
+    *ngIf="selectedSensor">{{'BUTTONS.continue' | translate}}</a>
+  <a class="btn primary ml20" (click)="openTab(FMSTab.Options,'tab')"
+    *ngIf="!selectedSensor && !isLoggedIn" ngbTooltip="{{'GLOBAL.sensor_not_selected' | translate}}"
+    placement="top left" disabled>{{'BUTTONS.continue' | translate}}</a>
+  <a class="btn primary ml20" (click)="openTab(FMSTab.Options,'tab')"
+    *ngIf="!selectedSensor && isLoggedIn"
+    ngbTooltip="{{'GLOBAL.auth_sensor_not_selected' | translate}}" placement="top left"
+    disabled>{{'BUTTONS.continue' | translate}}</a>
+</div>

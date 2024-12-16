@@ -1,0 +1,5 @@
+<form [formGroup]="parent" class="calcWrap">
+  <input [hidden]="!canControlAnglesFB1FB2" #inputFB1 type="number" class="arrowInput" id="arrowInput1" formControlName="fb_1_angle">
+  <input [hidden]="!canControlAnglesFB1FB2" #inputFB2 type="number" class="arrowInput" id="arrowInput2" formControlName="fb_2_angle">
+  <canvas #canvas id="force-canvas" [width]="width" [height]="height" class="working_calc_one"></canvas>
+</form>

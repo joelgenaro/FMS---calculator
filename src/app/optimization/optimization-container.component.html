@@ -1,0 +1,831 @@
+<div class="flex">
+  <div class="calcPercentages" *ngIf="drawingStyles">
+    <div class="indicator">
+      <div class="minToMax">
+        <div
+          class="small leftCol {{ drawingStyles.fmr_max_color }}"
+          [style]="drawingStyles.fmr_max_style"
+          *ngIf="
+            (selectedNominalForce &&
+              selectedNominalForce.force *
+                (forces.fmr_max | toMetricUnits : 'N') !==
+                0) ||
+            (isExpertModeEnabled &&
+              expertModeNominalForce *
+                (forces.fmr_max | toMetricUnits : 'N') !==
+                0)
+          "
+        >
+          <span
+            [ngClass]="{ out: forces?.fmr_max_fgr_percent < 12 }"
+            [style]="drawingStyles.fmr_max_text_style"
+            >FMR Max</span
+          >
+        </div>
+        <div
+          class="small rightCol {{ drawingStyles.fmr_min_color }}"
+          [style]="drawingStyles.fmr_min_style"
+          *ngIf="
+            (selectedNominalForce &&
+              selectedNominalForce.force *
+                (forces.fmr_min | toMetricUnits : 'N') !==
+                0) ||
+            (isExpertModeEnabled &&
+              expertModeNominalForce *
+                (forces.fmr_min | toMetricUnits : 'N') !==
+                0)
+          "
+        >
+          <span
+            [ngClass]="{ out: forces?.fmr_min_fgr_percent < 12 }"
+            [style]="drawingStyles.fmr_min_text_style"
+            >FMR Min</span
+          >
+        </div>
+        <div
+          class="big middleCol {{ drawingStyles.fgr_color }}"
+          [style]="drawingStyles.fgr_style"
+          *ngIf="
+            (selectedNominalForce || isExpertModeEnabled) && forces.fgr != 0
+          "
+        >
+          <span
+            [ngClass]="{ out: forces?.fgr_percent < 12 }"
+            [style]="drawingStyles.fgr_text_style"
+            >FGR</span
+          >
+        </div>
+
+        <div
+          class="marker"
+          [style]="drawingStyles.derating_factor_style"
+          *ngIf="
+            (sensorOrientationControl.value === 'arrow_up' ||
+              sensorOrientationControl.value === 'arrow_down') &&
+            selectedSensor?.options[0]?.has_orientation &&
+            forces.deratingFactor != 100
+          "
+        >
+          <div class="{{ drawingStyles.line_style_derating }}">
+            <i>{{ forces.deratingFactor }}%</i>
+            <span
+              class="iconHover sortIcon tooltipIcon"
+              tooltips
+              ngbTooltip="{{ 'CALCULATOR.red_percent_tooltip' | translate }}"
+              tooltip-position="bottom"
+              tooltip-class="bottom headerInfo"
+            >
+              <strong class="icon">
+                <img
+                  class="activeIcon"
+                  src="/assets/img/icons/active/icon_help.svg"
+                  alt="help icon"
+                />
+                <img
+                  class="defaultIcon"
+                  src="/assets/img/icons/default/icon_help.svg"
+                  alt="help icon"
+                />
+              </strong>
+            </span>
+          </div>
+        </div>
+        <div
+          class="marker"
+          [style]="drawingStyles.derating_factor_style_minus"
+          *ngIf="
+            (sensorOrientationControl.value === 'arrow_up' ||
+              sensorOrientationControl.value === 'arrow_down') &&
+            selectedSensor?.options[0]?.has_orientation &&
+            forces.deratingFactor != 100
+          "
+        >
+          <div class="{{ drawingStyles.line_style_derating_minus }}">
+            <i>-{{ forces.deratingFactor }}%</i>
+            <span
+              class="iconHover sortIcon tooltipIcon"
+              tooltips
+              ngbTooltip="{{ 'CALCULATOR.red_percent_tooltip' | translate }}"
+              tooltip-position="bottom"
+              tooltip-class="bottom headerInfo"
+            >
+              <strong class="icon">
+                <img
+                  class="activeIcon"
+                  src="/assets/img/icons/active/icon_help.svg"
+                  alt="help icon"
+                />
+                <img
+                  class="defaultIcon"
+                  src="/assets/img/icons/default/icon_help.svg"
+                  alt="help icon"
+                />
+              </strong>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="big black fixed">
+        100% =
+        {{
+          isExpertModeEnabled
+            ? expertModeNominalForce ?? 0
+            : selectedNominalForce?.force ?? 0
+        }}N
+      </div>
+    </div>
+
+    <div class="indicator" *ngIf="selectedSensor?.name === 'LMGZD'">
+      <div class="minToMax">
+        <div
+          class="small leftCol {{ drawingStyles.fmr_max_color_two }}"
+          [style]="drawingStyles.fmr_max_style_two"
+          *ngIf="
+            selectedNominalForce &&
+            selectedNominalForce?.second_force *
+              (forces.fmr_max | toMetricUnits : 'N') !=
+              0
+          "
+        >
+          <span [style]="drawingStyles.fmr_max_text_style_two">FMR Max</span>
+        </div>
+        <div
+          class="small rightCol {{ drawingStyles.fmr_min_color_two }}"
+          [style]="drawingStyles.fmr_min_style_two"
+          *ngIf="
+            selectedNominalForce &&
+            selectedNominalForce?.second_force *
+              (forces.fmr_min | toMetricUnits : 'N') !=
+              0
+          "
+        >
+          <span [style]="drawingStyles.fmr_min_text_style_two">FMR Min</span>
+        </div>
+        <div
+          class="big middleCol {{ drawingStyles.fgr_color_two }}"
+          [style]="drawingStyles.fgr_style_two"
+          *ngIf="selectedNominalForce && forces.fgr != 0"
+        >
+          <span
+            [ngClass]="{ out: forces?.fgr_percent_two < 12 }"
+            [style]="drawingStyles.fgr_text_style_two"
+            >FGR</span
+          >
+        </div>
+      </div>
+      <div class="big black fixed" *ngIf="selectedNominalForce">
+        100% = {{ selectedNominalForce?.second_force }}N
+      </div>
+      <div class="big black fixed" *ngIf="!selectedNominalForce">100% = 0N</div>
+    </div>
+  </div>
+
+  <div class="calcInfo">
+    <div
+      class="calcForm flexBox mt30"
+      [ngClass]="{
+        'big flexAlignEnd': selectedSensorJournalTypes?.length > 1,
+        flexAlignEnd: !selectedSensor?.options[0]?.has_orientation
+      }"
+    >
+      <div class="w50">
+        <div class="groupName pb20">
+          <span>{{ "CALCULATOR.sensor_specification" | translate }}</span>
+        </div>
+        <div
+          class="field select"
+          [hidden]="
+            !(
+              selectedSensor?.options[0]?.has_journal ||
+              selectedSensor?.options[0]?.has_journal
+            )
+          "
+        >
+          <label class="label w40" for="journal_select">{{
+            "OPTIONS.journal" | translate
+          }}</label>
+          <select
+            [formControl]="journalControl"
+            class="w60"
+            id="journal_select"
+            search-enabled="false"
+          >
+            <option value="">{{ "GLOBAL.select_option" | translate }}</option>
+            <option
+              [ngValue]="journal.id"
+              *ngFor="
+                let journal of selectedSensorJournalTypes
+                  | filterJournalTypes
+                    : sensorSizesControl.value
+                    : selectedSensorSizes
+                    : nominalForcesControl.value
+                    : selectedSizeNominalForces
+                  | sort : 'diameter'
+              "
+            >
+              {{
+                journal.url
+                  ? (journal.diameter | parseDiameter) + " mm"
+                  : (journal.diameter | parseDiameter)
+              }}
+            </option>
+          </select>
+        </div>
+        <div class="field select">
+          <label class="label w40" for="sensor_sizesss">{{
+            "OPTIONS.sensor_sizes" | translate
+          }}</label>
+          <select
+            [formControl]="sensorSizesControl"
+            class="w60"
+            search-enabled="false"
+            id="sensor_sizesss"
+          >
+            <option value="">{{ "GLOBAL.select_option" | translate }}</option>
+            <option
+              [ngValue]="size.id"
+              *ngFor="
+                let size of selectedSensorSizes
+                  | filterSensorSizes
+                    : journalControl.value
+                    : selectedSensorJournalTypes
+                    : nominalForcesControl.value
+                    : selectedSizeNominalForces
+                  | sort : 'name'
+              "
+            >
+              {{ size.name }}
+            </option>
+          </select>
+        </div>
+        <div class="field select">
+          <label class="label w40">
+            {{ "OPTIONS.nominal_forces" | translate }}
+            <span
+              class="iconHover sortIcon tooltipIcon"
+              ngbTooltip="{{ 'CALCULATOR.nominal_forces_tooltip' | translate }}"
+              tooltip-position="bottom"
+            >
+              <span class="icon">
+                <img
+                  class="activeIcon"
+                  src="/assets/img/icons/active/icon_help.svg"
+                  alt="help icon"
+                />
+                <img
+                  class="defaultIcon"
+                  src="/assets/img/icons/default/icon_help.svg"
+                  alt="help icon"
+                />
+              </span>
+            </span>
+          </label>
+          <select
+            *ngIf="!isExpertModeEnabled"
+            class="w60"
+            [formControl]="nominalForcesControl"
+            search-enabled="false"
+            id="nominal_forces"
+          >
+            <option value="">{{ "GLOBAL.select_option" | translate }}</option>
+            <ng-container *ngIf="sensorSizesControl.value !== ''">
+              <option
+                *ngFor="let item of selectedSizeNominalForces | sort : 'force'"
+                [ngValue]="item.id"
+              >
+                <span *ngIf="selectedSensor?.name !== 'LMGZD'">
+                  {{
+                    units === 0
+                      ? item.url
+                        ? item.force + " N"
+                        : item.force
+                      : item.url
+                      ? item.force +
+                        " N" +
+                        " (" +
+                        (item.force | toImperialUnits : "N" | number) +
+                        " lb )"
+                      : item.force
+                  }}
+                </span>
+                <span *ngIf="selectedSensor?.name === 'LMGZD'">
+                  {{
+                    units === 0
+                      ? item.url
+                        ? item.force + " N / " + item.second_force + " N "
+                        : item.force
+                      : item.url
+                      ? item.force +
+                        " N / " +
+                        item.second_force +
+                        " N " +
+                        " ( " +
+                        (item.force | toImperialUnits : "N" | number) +
+                        "lb / " +
+                        (item.second_force | toImperialUnits : "N" | number) +
+                        "lb )"
+                      : item.force
+                  }}
+                </span>
+              </option>
+            </ng-container>
+            <ng-container *ngIf="sensorSizesControl.value === ''">
+              <option
+                *ngFor="let item of allPossibleNominalForces | sort : 'force'"
+                [ngValue]="item.id"
+              >
+                <span *ngIf="selectedSensor?.name !== 'LMGZD'">
+                  {{
+                    units === 0
+                      ? item.url
+                        ? item.force + " N"
+                        : item.force
+                      : item.url
+                      ? item.force +
+                        " N" +
+                        " (" +
+                        (item.force | toImperialUnits : "N" | number) +
+                        " lb )"
+                      : item.force
+                  }}
+                </span>
+                <span *ngIf="selectedSensor?.name === 'LMGZD'">
+                  {{
+                    units === 0
+                      ? item.url
+                        ? item.force + " N / " + item.second_force + " N "
+                        : item.force
+                      : item.url
+                      ? item.force +
+                        " N / " +
+                        item.second_force +
+                        " N " +
+                        " ( " +
+                        (item.force | toImperialUnits : "N" | number) +
+                        "lb / " +
+                        (item.second_force | toImperialUnits : "N" | number) +
+                        "lb )"
+                      : item.force
+                  }}
+                </span>
+              </option>
+            </ng-container>
+          </select>
+          <input
+            type="number"
+            class="w60"
+            *ngIf="isExpertModeEnabled"
+            [formControl]="expertModeNominalForceControl"
+            appFocus
+          />
+        </div>
+        <div
+          class="field select"
+          *ngIf="selectedSensor?.options[0]?.has_mounting_option"
+        >
+          <label class="label w40">{{ "FORCES.mounting" | translate }}</label>
+          <select class="w60" id="" [formControl]="mountingControl">
+            <option value="">{{ "GLOBAL.select_option" | translate }}</option>
+            <option
+              *ngFor="
+                let opt of mountingOrientationOptions
+                  | mountingOrientationFilter : 'Mounting'
+              "
+              [value]="opt.id"
+            >
+              {{ language === "locale-en_EN" ? opt.name : opt.name_de }}
+            </option>
+          </select>
+        </div>
+        <div
+          class="field select"
+          *ngIf="selectedSensor?.options[0]?.has_orientation"
+        >
+          <label class="label w40">{{
+            "CALCULATOR.PLUG_ORIENTATION" | translate
+          }}</label>
+          <select class="w60" id="" [formControl]="plugOrientationControl">
+            <option value="">{{ "GLOBAL.select_option" | translate }}</option>
+            <option
+              *ngFor="
+                let opt of mountingOrientationOptions
+                  | mountingOrientationFilter : 'PlugOrientation'
+              "
+              [value]="opt.id"
+            >
+              {{ language === "locale-en_EN" ? opt.name : opt.name_de }}
+            </option>
+          </select>
+        </div>
+        <div
+          class="field select mb0"
+          *ngIf="selectedSensor?.options[0]?.has_material"
+        >
+          <label class="label w40" for="materials">{{
+            "CALCULATOR.MATERIAL" | translate
+          }}</label>
+          <select class="w60" id="materials" [formControl]="materialControl">
+            <option value="">{{ "GLOBAL.select_option" | translate }}</option>
+            <option *ngFor="let material of materials" [value]="material.id">
+              {{
+                language === "locale-en_EN"
+                  ? material.description_en
+                  : material.description_de
+              }}
+            </option>
+          </select>
+        </div>
+        <div class="field productCode mt20" *ngIf="productCode">
+          <label class="label w40 line0">{{
+            "CALCULATOR.product_code" | translate
+          }}</label>
+          <strong class="w60">{{ productCode }}</strong>
+        </div>
+        <div
+          class="field productCode mt20"
+          *ngIf="selectedSizeBearings?.length > 0"
+        >
+          <label class="label w40 line0">{{
+            "OPTIONS.matchingBearings" | translate
+          }}</label>
+          <strong class="w60">{{ selectedSizeBearings | mapBearings }}</strong>
+        </div>
+      </div>
+      <div class="w55">
+        <div class="checkStyle">
+          <input
+            type="checkbox"
+            [formControl]="rotation_applications"
+            id="rotation_applications"
+            name="rotation_applications"
+          />&nbsp;{{ "OPTIONS.rotation_application" | translate }}
+        </div>
+
+        <div
+          class="optionsDir mt70 mb10"
+          [hidden]="!selectedSensor?.options[0]?.has_orientation"
+        >
+          <div class="group mb25">
+            <div class="radioStyle">
+              <label>
+                <input
+                  type="radio"
+                  [formControl]="sensorOrientationControl"
+                  value="arrow_left"
+                  [checked]="sensorOrientationControl.value === 'arrow_left'"
+                />
+                <span class="checkIcon"></span>
+                <span><img src="/assets/img/ic_right.svg" /></span>
+              </label>
+            </div>
+            <div class="dirName">Horizontal</div>
+            <div class="radioStyle">
+              <label>
+                <input
+                  type="radio"
+                  [formControl]="sensorOrientationControl"
+                  value="arrow_right"
+                  [checked]="sensorOrientationControl.value === 'arrow_right'"
+                />
+                <span class="checkIcon"></span>
+                <span><img src="/assets/img/ic_left.svg" /></span>
+              </label>
+            </div>
+          </div>
+          <div class="group">
+            <div class="radioStyle">
+              <label>
+                <input
+                  type="radio"
+                  [formControl]="sensorOrientationControl"
+                  value="arrow_down"
+                  [checked]="sensorOrientationControl.value === 'arrow_down'"
+                />
+                <span class="checkIcon"></span>
+                <span><img src="/assets/img/ic_down.svg" /></span>
+              </label>
+            </div>
+            <div class="dirName">Vertical</div>
+            <div class="radioStyle">
+              <label>
+                <input
+                  type="radio"
+                  [formControl]="sensorOrientationControl"
+                  value="arrow_up"
+                  [checked]="sensorOrientationControl.value === 'arrow_up'"
+                />
+                <span class="checkIcon"></span>
+                <span><img src="/assets/img/ic_up.svg" /></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons flex justify-start">
+          <ng-container *ngIf="selectedSensor?.name !== 'LMGZD'">
+            <button
+              type="button"
+              (click)="openAllPossibleModal()"
+              class="btn primary"
+            >
+              {{ "OPTIONS.all_possible" | translate }}
+            </button>
+            <button class="btn primary" (click)="onClickProposal()">
+              {{ "OPTIONS.proposal" | translate }}
+            </button>
+          </ng-container>
+          <button type="button" class="btn primary" (click)="reset()">
+            {{ "OPTIONS.reset" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="column labelOnly size46 mt10 mb20 padd0">
+        <div
+          class="warningArea"
+          [ngClass]="{
+            show:
+              warnings?.length > 0 &&
+              (selectedNominalForce || isExpertModeEnabled)
+          }"
+        >
+          <img
+            src="assets/img/icons/warning.png"
+            width="60"
+            alt=""
+            (click)="toggleWarningMessage()"
+          />
+          <div
+            id="warrning_id"
+            class="alert warning"
+            *ngIf="
+              warningMessageShown &&
+              (selectedNominalForce || isExpertModeEnabled)
+            "
+          >
+            <ng-container *ngTemplateOutlet="warningsTemplate"></ng-container>
+          </div>
+        </div>
+        <div class="group">
+          <div class="groupName pb20">
+            <span>{{ "CALCULATOR.forces_per_sensor" | translate }}</span>
+          </div>
+          <div class="field">
+            <label class="label">FMR<i class="index">min</i></label>
+            <span class="calcValue">
+              <strong
+                >{{ forces.fmr_min.toFixed(2) }}
+                {{ units | selectedSystemFactor : "N" }}</strong
+              >
+              <span
+                *ngIf="selectedNominalForce && selectedSensor?.name === 'LMGZD'"
+              >
+                ({{ forces?.fmr_min_percent | number : "1.0-2" }}%/
+                {{ forces?.fmr_min_percent_two | number : "1.0-2" }}%)</span
+              >
+              <span
+                *ngIf="
+                  (selectedNominalForce || isExpertModeEnabled) &&
+                  selectedSensor?.name !== 'LMGZD'
+                "
+              >
+                ({{ forces?.fmr_min_percent | number : "1.0-2" }}%)</span
+              >
+            </span>
+          </div>
+          <div class="field">
+            <label class="label">FMR<i class="index">max</i></label>
+            <span class="calcValue">
+              <strong
+                >{{ forces.fmr_max.toFixed(2) }}
+                {{ units | selectedSystemFactor : "N" }}</strong
+              >
+              <span
+                *ngIf="selectedNominalForce && selectedSensor?.name === 'LMGZD'"
+              >
+                ({{ forces?.fmr_max_percent | number : "1.0-2" }}%/
+                {{ forces?.fmr_max_percent_two | number : "1.0-2" }}%)</span
+              >
+              <span
+                *ngIf="
+                  (selectedNominalForce || isExpertModeEnabled) &&
+                  selectedSensor?.name !== 'LMGZD'
+                "
+              >
+                ({{ forces?.fmr_max_percent | number : "1.0-2" }}%)</span
+              >
+            </span>
+          </div>
+          <div class="field">
+            <label class="label">FMR<i class="index">min</i> + FGR</label>
+            <span class="calcValue">
+              <strong
+                >{{ (forces.fmr_min + forces.fgr).toFixed(2) }}
+                {{ units | selectedSystemFactor : "N" }}</strong
+              >
+              <span
+                *ngIf="selectedNominalForce && selectedSensor?.name === 'LMGZD'"
+              >
+                ({{ forces?.fmr_min_fgr_percent | number : "1.0-2" }}%/
+                {{ forces?.fmr_min_fgr_percent_two | number : "1.0-2" }}%)</span
+              >
+              <span
+                *ngIf="
+                  (selectedNominalForce || isExpertModeEnabled) &&
+                  selectedSensor?.name !== 'LMGZD'
+                "
+              >
+                ({{ forces?.fmr_min_fgr_percent | number : "1.0-2" }}%)</span
+              >
+            </span>
+          </div>
+          <div class="field">
+            <label class="label">FMR<i class="index">max</i> + FGR</label>
+            <span class="calcValue">
+              <strong
+                >{{ (forces.fmr_max + forces.fgr).toFixed(2) }}
+                {{ units | selectedSystemFactor : "N" }}</strong
+              >
+              <span
+                *ngIf="selectedNominalForce && selectedSensor?.name === 'LMGZD'"
+              >
+                ({{ forces?.fmr_max_fgr_percent | number : "1.0-2" }}%/
+                {{ forces?.fmr_max_fgr_percent_two | number : "1.0-2" }}%)</span
+              >
+              <span
+                *ngIf="
+                  (selectedNominalForce || isExpertModeEnabled) &&
+                  selectedSensor?.name !== 'LMGZD'
+                "
+              >
+                ({{ forces?.fmr_max_fgr_percent | number : "1.0-2" }}%)</span
+              >
+            </span>
+          </div>
+          <div class="field">
+            <label class="label">FGR</label>
+            <span class="calcValue">
+              <strong *ngIf="units == 0"
+                >{{ forces.fgr.toFixed(2) }}
+                {{ units | selectedSystemFactor : "N" }}</strong
+              >
+              <strong *ngIf="units !== 0"
+                >{{ forces.fgr != null ? forces.fgr.toFixed(2) : forces.fgr }}
+                {{ units | selectedSystemFactor : "N" }}</strong
+              >
+              <span
+                *ngIf="selectedNominalForce && selectedSensor?.name === 'LMGZD'"
+              >
+                ({{ forces?.fgr_percent | number : "1.0-2" }}%/
+                {{ forces?.fgr_percent_two | number : "1.0-2" }}%)</span
+              >
+              <span
+                *ngIf="
+                  (selectedNominalForce || isExpertModeEnabled) &&
+                  selectedSensor?.name !== 'LMGZD'
+                "
+              >
+                ({{ forces?.fgr_percent | number : "1.0-2" }}%)</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="column size54 padd0">
+        <div class="w100 mt15 pr30 d-flex">
+          <div class="column padd0">
+            <div class="field pr10 angle">
+              <label class="label w50"
+                >R
+                <span
+                  class="iconHover sortIcon tooltipIcon"
+                  ngbTooltip="{{ 'CALCULATOR.r_tooltip' | translate }}"
+                  tooltip-position="bottom"
+                >
+                  <span class="icon">
+                    <img
+                      class="activeIcon"
+                      src="/assets/img/icons/active/icon_help.svg"
+                      alt="help icon"
+                    />
+                    <img
+                      class="defaultIcon"
+                      src="/assets/img/icons/default/icon_help.svg"
+                      alt="help icon"
+                    />
+                  </span>
+                </span>
+              </label>
+              <input
+                id="angler"
+                class="w50"
+                type="number"
+                [max]="maxAngler"
+                [formControl]="angleRControl"
+                focus-focus
+              />
+            </div>
+          </div>
+          <div class="column padd0">
+            <div class="field pl5 angle">
+              <label class="label w50"
+                >FMR
+                <span
+                  class="iconHover sortIcon tooltipIcon"
+                  ngbTooltip="{{ 'CALCULATOR.fmr_tooltip' | translate }}"
+                  tooltip-position="bottom"
+                >
+                  <span class="icon">
+                    <img
+                      class="activeIcon"
+                      src="/assets/img/icons/active/icon_help.svg"
+                      alt="help icon"
+                    />
+                    <img
+                      class="defaultIcon"
+                      src="/assets/img/icons/default/icon_help.svg"
+                      alt="help icon"
+                    />
+                  </span>
+                </span>
+              </label>
+              <input
+                id="angle_fmr"
+                class="w50"
+                type="number"
+                [formControl]="angleFMRControl"
+                focus-focus
+              />
+            </div>
+          </div>
+        </div>
+        <app-angles-canvas-drawing
+          style="display: block; margin-top: -30px"
+          [forces]="forces"
+          [selectedSensor]="selectedSensor"
+          [width]="360"
+          [height]="360"
+          [angleRControl]="angleRControl"
+          [sensorOrientation]="sensorOrientation"
+          [canControlAnglesFB1FB2]="false"
+          (drawingEmitted)="setCanvasDrawing($event)"
+        ></app-angles-canvas-drawing>
+      </div>
+    </div>
+  </div>
+
+  <app-current-item
+    [units]="units"
+    [forces]="forces"
+    [language]="language"
+    [selectedSensor]="selectedSensor"
+  ></app-current-item>
+</div>
+
+<div class="pageNav text-left">
+  <div *ngIf="headerActionButtonsShown" class="header-actions-wrapper">
+    <button class="btn primary" (click)="emitHeaderAction('pdf')">
+      {{ "HEADER.print" | translate }}
+    </button>
+    <button class="btn primary" (click)="emitHeaderAction('share')">
+      {{ "HEADER.share" | translate }}
+    </button>
+    <button class="btn primary" (click)="emitHeaderAction('save')">
+      {{ "HEADER.save" | translate }}
+    </button>
+  </div>
+  <a class="btn primary" (click)="openTab(FMSTab.Options, 'tab')">{{
+    "BUTTONS.back" | translate
+  }}</a>
+  <button
+    (click)="toggleHeaderActionButtons()"
+    class="btn primary continue-button"
+  >
+    {{ "BUTTONS.continue" | translate }}
+  </button>
+</div>
+
+<ng-template #warningsTemplate>
+  <ng-container *ngFor="let warning of warnings">
+    <p
+      *ngIf="
+        warning.type === 'fmr_max_less_than_measuring_range' ||
+        warning.type === 'fmr_min_less_than_measuring_range'
+      "
+    >
+      {{ warning.prefix }}{{ selectedSensor?.measuring_range
+      }}{{
+        language === "locale-en_EN" ? warning.suffix_en : warning.suffix_de
+      }}
+    </p>
+    <p
+      *ngIf="
+        warning.type !== 'fmr_max_less_than_measuring_range' &&
+        warning.type !== 'fmr_min_less_than_measuring_range'
+      "
+    >
+      {{ language === "locale-en_EN" ? warning.name_en : warning.name_de }}
+    </p>
+  </ng-container>
+</ng-template>

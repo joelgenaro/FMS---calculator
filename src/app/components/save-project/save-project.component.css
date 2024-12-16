@@ -1,0 +1,20 @@
+.version-button {
+  font-size: 10px;
+  height: 30px;
+  padding: 0 10px;
+  color: #ffffff;
+  border: none;
+  transition: opacity 0.2s ease;
+}
+
+.version-button + .version-button {
+  margin-left: 5px;
+}
+
+.version-button.primary {
+  background-color: #46555a;
+}
+
+.version-button:hover {
+  opacity: 0.8;
+}

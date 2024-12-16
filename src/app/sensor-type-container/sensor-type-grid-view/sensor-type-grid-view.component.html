@@ -1,0 +1,69 @@
+<div class="container flex ng-cloak">
+</div>
+<div class="tableStyle sensorType marginCenter h500">
+  <div class="tableName mt10">
+    <span>{{'SENSOR_TYPE.sensor_type' | translate}}</span>
+  </div>
+  <div class="fixedTable" id="sensor_types_list_table">
+
+    <table id="sensor_types_list" border="0" class="even fixed">
+      <thead>
+        <tr>
+          <th>
+            <p>{{'SENSOR_TYPE.select' | translate}}</p>
+          </th>
+          <th>
+            <p>
+              {{'SENSOR_TYPE.name' | translate}}
+              <a class="iconHover sortIcon"></a>
+            </p>
+          </th>
+          <th>
+            <p>{{'SENSOR_TYPE.image' | translate}}</p>
+          </th>
+          <th>
+            <p>{{'SENSOR_TYPE.mounting_style' | translate}}</p>
+          </th>
+          <th>
+            <p>{{'SENSOR_TYPE.datasheet' | translate}}</p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let sensor_type of (sensorTypes | sensorFilter: currentFilter?.value) | sensorOrder">
+          <tr>
+            <td>
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" name="selected_sensor"
+                    (click)="setSelectedSensor(sensor_type)">
+                  <span class="checkIcon" [ngClass]="{ checked: selectedSensor?.id === sensor_type.id }"></span>
+                </label>
+              </div>
+            </td>
+            <td>{{language === 'locale-en_EN' ? sensor_type.name : sensor_type.name_de}}</td>
+            <td>
+              <div class="itemImage">
+                <img *ngIf="sensor_type.image" src="{{sensor_type.image}}" alt="item">
+              </div>
+            </td>
+            <td>
+              <div class="itemImage">
+                <img *ngIf="sensor_type.mounting_style" src="{{sensor_type.mounting_style}}" alt="item">
+              </div>
+            </td>
+            <td *ngIf="language === 'locale-en_EN'"><a *ngIf="sensor_type.datasheet_en"
+                href="{{sensor_type.datasheet_en}}"
+                target="_blank">{{'SENSOR_TYPE.datasheet' | translate}}</a>
+            </td>
+            <td *ngIf="language === 'locale-de_DE'"><a *ngIf="sensor_type.datasheet_de"
+                href="{{sensor_type.datasheet_de}}"
+                target="_blank">{{'SENSOR_TYPE.datasheet' | translate}}</a>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -1,0 +1,115 @@
+  <div class="tableStyle projectsTable marginCenter h500 pt15">
+    <div class="clear"></div>
+    <div class="tableName mt-2">
+      <span class="ng-binding">Projects</span>
+    </div>
+    <div class="fixedTable">
+      <table border="0" class="even fixed">
+        <thead>
+          <tr>
+            <th>
+              <p>
+                {{'PROJECT_DATA.name' | translate}}
+                <span class="sort-icon" [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'name'}"
+                  (click)="toggleProjectsSortOption($event, 'name')">
+                  <i class="part-up fa fa-caret-up"></i>
+                  <i class="part-down fa fa-caret-down"></i>
+                </span>
+              </p>
+            </th>
+            <th>
+              <p>
+                {{'PROJECT_DATA.responsible' | translate}}
+                <span class="sort-icon"
+                  [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'user_full_name'}"
+                  (click)="toggleProjectsSortOption($event, 'user_full_name')">
+                  <i class="part-up fa fa-caret-up"></i>
+                  <i class="part-down fa fa-caret-down"></i>
+                </span>
+              </p>
+            </th>
+            <th>
+              <p>{{'PROJECT_DATA.company' | translate}}
+                <span class="sort-icon"
+                  [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'company.company'}"
+                  (click)="toggleProjectsSortOption($event, 'company.company')">
+                  <i class="part-up fa fa-caret-up"></i>
+                  <i class="part-down fa fa-caret-down"></i>
+                </span>
+              </p>
+            </th>
+            <th>
+              <p>{{'PROJECT_DATA.proj_description' | translate}}
+                <span class="sort-icon"
+                  [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'description'}"
+                  (click)="toggleProjectsSortOption($event, 'description')">
+                  <i class="part-up fa fa-caret-up"></i>
+                  <i class="part-down fa fa-caret-down"></i>
+                </span>
+              </p>
+            </th>
+            <th>
+              <p>{{'PROJECT_DATA.number' | translate}}
+                <span class="sort-icon" [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'id'}"
+                  (click)="toggleProjectsSortOption($event, 'id')">
+                  <i class="part-up fa fa-caret-up"></i>
+                  <i class="part-down fa fa-caret-down"></i>
+                </span>
+              </p>
+            </th>
+            <th>
+              <p>{{'PROJECT_DATA.date' | translate}}
+                <span class="sort-icon" [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'created_at'}"
+                  (click)="toggleProjectsSortOption($event, 'created_at')">
+                  <i class="part-up fa fa-caret-up"></i>
+                  <i class="part-down fa fa-caret-down"></i>
+                </span>
+              </p>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of fiterdProjects" (click)="navigateToDrawing(project)">
+            <td><a title="open">{{project.name}}</a></td>
+            <td><a title="open">{{project.user.first_name}}&nbsp;{{project.user.last_name}}</a></td>
+            <td><a title="open">{{project.company.company || project.user.company.company}}</a></td>
+            <td><a title="Open">
+                <span *ngIf="project.description&&project.description.length <= 20">{{project.description}}</span>
+                <span *ngIf="project.description&&project.description.length > 20" ngbTooltip="{{project.description}}">
+                  {{ project.description | slice:0:20}}...
+                </span>
+              </a></td>
+            <td><a title="open">{{project.id}}</a></td>
+            <td><a title="open">{{toProjectDateFormat(project.created_at,false)}}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="searchForm mt15">
+      <div class="row">
+        <div class="col-4">
+          <input class="form-control" type="text" [(ngModel)]="searchProject"
+            placeholder="{{'BUTTONS.search' | translate}}" (ngModelChange)="filterData()">
+        </div>
+        <div class="col-4">
+          <select class="form-control" [(ngModel)]="searchField" (ngModelChange)="filterData()">
+            <option value="">{{'GLOBAL.all_fields' | translate}}</option>
+            <option value="name">{{'PROJECT_DATA.name' | translate}}</option>
+            <option value="user.first_name">{{'PROJECT_DATA.responsible' | translate}}</option>
+            <option value="company.company">{{'PROJECT_DATA.company' | translate}}</option>
+            <option value="description">{{'PROJECT_DATA.proj_description' | translate}}</option>
+            <option value="id">{{'PROJECT_DATA.number' | translate}}</option>
+            <option value="created_at">{{'PROJECT_DATA.date' | translate}}</option>
+          </select>
+        </div>
+        <div class="col-3 p-0">
+          <div class="iconHover">
+            <button class="circleBtn icon icon-35">
+              <img class="defaultIcon" src="/assets/img/icons/default/icon_search.svg" alt="search icon">
+              <img class="activeIcon" src="/assets/img/icons/active/icon_search.svg" alt="search icon">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

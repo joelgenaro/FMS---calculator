@@ -1,0 +1,210 @@
+<div class="dialogStyle w100">
+  <div class="dialogTitle">
+    <span class="modal-title">{{'PROJECT_DATA.project_administration' | translate}}</span>
+  </div>
+  <div class="dialogInfo clearAfter">
+    {{'PROJECT_DATA.project_information' | translate}}
+
+    <form [formGroup]="projectForm" class="dialogInfo clearAfter marginCenter w100">
+      <div class="dialogScroll">
+        <div class="section">
+          <div class="field">
+            <label class="label">{{'PROJECT_DATA.name' | translate}}</label>
+            <input formControlName="name" type="text">
+          </div>
+          <div class="field">
+            <label class="label">{{'PROJECT_DATA.responsible' | translate}}</label>
+            <input formControlName="ownerName" type="text">
+          </div>
+          <div class="field">
+            <label for="company" class="label">{{'PROJECT_DATA.company' | translate}}</label>
+            <input formControlName="companyName" type="text">
+          </div>
+          <div class="field blockField" *ngIf="project">
+            <label class="label">{{'PROJECT_DATA.collegues' | translate}}</label>
+            <div class="tableStyle marginCenter">
+              <div class="fixedTable">
+                <table border="0" class="even fixed">
+                  <thead>
+                    <tr *ngIf="project?.shares.length > 0">
+                      <th>
+                        <p>
+                          {{'PROJECT_DATA.email' | translate}}
+                        </p>
+                      </th>
+                      <th>
+                        <p>
+                          {{'PROJECT_DATA.first_name' | translate}}
+                        </p>
+                      </th>
+                      <th colspan="2">
+                        <p class="floatRight">
+                          {{'PROJECT_DATA.per_mail' | translate}}
+                        </p>
+                        <p>
+                          {{'PROJECT_DATA.last_name' | translate}}
+                        </p>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let share of project?.shares">
+                      <td>{{share.user.email}}</td>
+                      <td>{{share.user.first_name}}</td>
+                      <td>{{share.user.last_name}}</td>
+                      <td>{{share.per_mail ? 'Yes' : 'No'}}</td>
+                    </tr>
+                    <tr class="addNew">
+                      <td><input placeholder="{{'PROJECT_DATA.ph_email' | translate}}" [(ngModel)]="send.email" [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td><input placeholder="{{'PROJECT_DATA.ph_comment' | translate}}" [(ngModel)]="send.comment" [ngModelOptions]="{standalone: true}">
+                      </td>
+                      <td class="checkStyle"><input type="checkbox" [(ngModel)]="send.per_mail" id="scales" name="scales" [ngModelOptions]="{standalone: true}">{{'PROJECT_DATA.per_mail' | translate}}</td>
+                      <td>
+                        <button type="button" aria-label="Close dialog" (click)="send_project(send)"
+                          class="btn dark ml20">
+                          {{'BUTTONS.add' | translate}}
+                        </button>
+                      </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="field blockField">
+            <label class="label">{{'PROJECT_DATA.description' | translate}}</label>
+            <textarea formControlName="description" rows="8" cols="60"></textarea>
+          </div>
+        </div>
+        <div class="field blockField" *ngIf="calculations.length > 0">
+          <label class="label">{{'CALCULATION_DATA.calculations' | translate}}</label>
+          <div class="tableStyle marginCenter h500">
+            <div class="fixedTable">
+              <table border="0" class="even fixed">
+                <thead>
+                  <tr>
+                    <th>
+                      <p>
+                        #
+                        <span class="sort-icon" [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'id'}"
+                          (click)="toggleProjectsSortOption($event, 'id')">
+                          <i class="part-up fa fa-caret-up"></i>
+                          <i class="part-down fa fa-caret-down"></i>
+                        </span>
+                      </p>
+                    </th>
+                    <th>
+                      <p>
+                        {{'CALCULATION_DATA.name' | translate}}
+                        <span class="sort-icon"
+                          [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'name'}"
+                          (click)="toggleProjectsSortOption($event, 'name')">
+                          <i class="part-up fa fa-caret-up"></i>
+                          <i class="part-down fa fa-caret-down"></i>
+                        </span>
+                      </p>
+                    </th>
+                    <th>
+                      <p>
+                        {{'CALCULATION_DATA.calc_description' | translate}}
+                        <span class="sort-icon"
+                          [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'description'}"
+                          (click)="toggleProjectsSortOption($event, 'description')">
+                          <i class="part-up fa fa-caret-up"></i>
+                          <i class="part-down fa fa-caret-down"></i>
+                        </span>
+                      </p>
+                    </th>
+                    <th>
+                      <p>
+                        {{'CALCULATION_DATA.sensor' | translate}}
+                        <span class="sort-icon"
+                          [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'sensor'}"
+                          (click)="toggleProjectsSortOption($event, 'sensor')">
+                          <i class="part-up fa fa-caret-up"></i>
+                          <i class="part-down fa fa-caret-down"></i>
+                        </span>
+                      </p>
+                    </th>
+                    <th>
+                      <p>
+                        {{'PROJECT_DATA.date' | translate}}
+                        <span class="sort-icon desc"
+                          [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'created_at'}"
+                          (click)="toggleProjectsSortOption($event, 'created_at')">
+                          <i class="part-up fa fa-caret-up"></i>
+                          <i class="part-down fa fa-caret-down"></i>
+                        </span>
+                      </p>
+                    </th>
+                    <th>
+                      <p>
+                        {{'HEADER.user' | translate}}
+                        <span class="sort-icon"
+                          [ngClass]="{'enabled': projectsSortingConfig.activeSortOption === 'user_full_name'}"
+                          (click)="toggleProjectsSortOption($event, 'user_full_name')">
+                          <i class="part-up fa fa-caret-up"></i>
+                          <i class="part-down fa fa-caret-down"></i>
+                        </span>
+                      </p>
+                    </th>
+                    <th>
+                      <p>{{ 'PROJECT_DATA.versions' | translate }}</p>
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let calc of calculations | latestCalculationVersion | sortProjectAdministration: projectsSortingConfig.activeSortOption: projectsSortingConfig.activeSortDirection;index as i; odd as isOdd; even as isEven" [class.even]="isOdd"
+                    (click)="openVersion(calc)">
+                    <td><a title="Open">{{calc.id}}</a></td>
+                    <td><a title="Open">{{calc.name}}</a></td>
+                    <td><a title="Open">
+                        <span *ngIf="calc.description?calc.description.length <= 20:''">{{calc.description}}</span>
+                        <span *ngIf="calc.description?calc.description.length > 20:''"
+                          ngbTooltip="{{calc.description}}">
+                          {{calc.description | slice:0:20}}...
+                        </span>
+                      </a></td>
+                    <td><a title="Open">{{calc.sensor}}</a></td>
+                    <td><a title="Open">{{ calc.created_at | toProjectDateFormat }}</a></td>
+                    <td><a title="Open">{{calc.user.first_name}} {{calc.user.last_name}}</a></td>
+                    <td style="white-space: nowrap;">
+                      <button class="primary version-button" title="Open">{{calc.version}}</button>
+                      <button (click)="openAllVersions($event, calc)" class="primary version-button" title="More">{{ 'PROJECT_DATA.more' | translate }}</button>
+                    </td>
+                    <td>
+                      <span class="iconHover tooltipIcon" *ngIf="mountingItooltip">
+                        <button type="button" class="circleBtn icon icon-30 marginCenter"
+                          (click)="$event.stopPropagation();delete_calculation(calc.token, calc.calc_id, calc.vers_id)"
+                          ngbTooltip="Delete" tooltip-position="right">
+                          <img class="defaultIcon" src="/assets/img/icons/default/icon_delete.svg" alt="delete icon">
+                          <img class="activeIcon" src="/assets/img/icons/active/icon_delete.svg" alt="delete icon">
+                        </button>
+                      </span>
+                      <span class="iconHover tooltipIcon" *ngIf="!mountingItooltip">
+                        <button type="button" class="circleBtn icon icon-30 marginCenter"
+                          (click)="delete_calculation(calc.token, calc.calc_id, calc.vers_id)" ngbTooltip="Löschen"
+                          tooltip-position="right">
+                          <img class="defaultIcon" src="/assets/img/icons/default/icon_delete.svg" alt="delete icon">
+                          <img class="activeIcon" src="/assets/img/icons/active/icon_delete.svg" alt="delete icon">
+                        </button>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="float-right mt-3">
+      <button type="button" class="btn dark  mb-4 login-button mr-3" (click)="save_project()">{{ 'BUTTONS.save' | translate }}</button>
+      <button type="button" class="btn dark mb-4 mr-3 login-button" (click)="closeModel()">{{ 'BUTTONS.cancel' | translate }}</button>
+    </div>
+  </div>
+</div>

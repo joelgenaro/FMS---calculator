@@ -1,0 +1,34 @@
+<div class="container flex">
+  <form [formGroup]="hOptionsForm" class="mb40 optionsBlock">
+    <div class="groupName">
+      <span>{{'OPTIONS.options' | translate}}</span>
+    </div>
+    <div class="group options-container">
+      <div class="checkStyle mb10" formArrayName="options" *ngFor="let option of options.controls; let i = index;">
+        <ng-container [formGroupName]="i">
+          <label class="label" [for]="option.value.id" (click)="option.patchValue(!option.value.checked)">
+            <div class="option-wrapper">
+              <p class="option-code" [class.checked]="option.value.checked">{{ option.value.code }}</p>
+              <img *ngIf="option.value.image" width="150" height="150" [src]="option.value.image" alt="">
+              <p class="option-description">{{ language === 'locale-en_EN' ? option.value.name : option.value.name_de }}</p>
+            </div>
+            <input [id]="option.value.id" type="checkbox" formControlName="checked">
+          </label>
+        </ng-container>
+      </div>
+    </div>
+    <div class="w60 mt40">
+      <div class="field">
+        <label class="label">{{'OPTIONS.comment' | translate}}</label>
+        <textarea formControlName="comment"
+          placeholder="{{'GLOBAL.add_a_comment' | translate}}" rows="8" cols="60"></textarea>
+      </div>
+    </div>
+  </form>
+
+  <app-current-item [units]="units" [language]="language" [selectedSensor]="selectedSensor" [forces]="forces"></app-current-item>
+  <div class="pageNav text-right">
+    <a class="btn primary" (click)="openTab(FMSTab.SensorTypes, 'tab')">{{'BUTTONS.back' | translate}}</a>
+    <a class="btn primary ml20" (click)="openTab(FMSTab.Optimization, 'tab')">{{'BUTTONS.continue' | translate}}</a>
+  </div>
+</div>

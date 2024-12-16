@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="30px" height="30px" viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+<style type="text/css">
+<![CDATA[
+	.st0{fill:#46555A;}
+	.st1{fill:none;stroke:#FFFFFF;stroke-miterlimit:10;}
+	.st2{clip-path:url(#SVGID_2_);}
+	.st3{fill:#FFFFFF;}
+]]>
+</style>
+<g>
+	<defs>
+		<circle id="SVGID_1_" cx="15" cy="14.7" r="12.5"/>
+	</defs>
+	<use xlink:href="#SVGID_1_"  style="overflow:visible;fill:#46555A;"/>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	</clipPath>
+	<g class="st2">
+		<g>
+			<path class="st0" d="M15,4.2c5.8,0,10.5,4.7,10.5,10.5c0,5.8-4.7,10.5-10.5,10.5c-5.8,0-10.5-4.7-10.5-10.5
+				C4.5,8.9,9.2,4.2,15,4.2 M15,2.2C8.1,2.2,2.5,7.8,2.5,14.7S8.1,27.2,15,27.2c6.9,0,12.5-5.6,12.5-12.5S21.9,2.2,15,2.2L15,2.2z"
+				/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<path class="st3" d="M22,18.8c0,1.2-1,2.2-2.2,2.2h-9.6C9,21,8,20,8,18.8v-4.6C8,13,9,12,10.2,12h9.6c1.2,0,2.2,1,2.2,2.2V18.8z"
+			/>
+	</g>
+	<g>
+		<path class="st1" d="M18.5,12V9.2c0-1.9-1.6-3.5-3.5-3.5c-1.9,0-3.5,1.5-3.5,3.4V14"/>
+	</g>
+</g>
+</svg>

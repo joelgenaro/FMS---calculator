@@ -1,0 +1,123 @@
+<div class="dialogStyle loginDialog">
+
+  <div class="dialogBanner clearAfter">
+    <div class="infoArea">
+      <h3><strong>FMS</strong> Gain Calculator</h3>
+      <h3>Version 3.4</h3>
+    </div>
+    <div class="imgArea"></div>
+  </div>
+
+
+  <div style="margin-left:15px; margin-right:15px">
+    <div class="tableStyle projectsTable marginCenter h200 pt15">
+      <div class="tableName mt10">
+        <span>{{'GAIN.title' | translate}}</span>
+      </div>
+
+      <div class="fixedTable" *ngIf="data">
+        <table border="0" class="even fixed">
+          <tbody>
+            <tr>
+              <td>{{'GAIN.sensor' | translate}}</td>
+              <td>{{data.productCode}}</td>
+            </tr>
+            <tr>
+
+              <td>{{'GAIN.fb' | translate}}</td>
+              <td>{{data.max_material_tension.values.fb_max}} {{selected_system_factor('N')}}</td>
+            </tr>
+            <tr>
+              <td>{{'GAIN.fmr' | translate}}</td>
+              <td>{{data.fmr_max.toFixed(2)}} {{selected_system_factor('N')}}</td>
+            </tr>
+            <tr>
+              <td>{{'GAIN.nomforce' | translate}}</td>
+              <td>{{data.f_n}} N</td>
+            </tr>
+            <tr>
+              <td>{{'GAIN.number' | translate}}</td>
+              <td>{{data.nr_sensor}}</td>
+            </tr>
+            <tr>
+              <td>{{'GAIN.sensitivity' | translate}}</td>
+              <td>{{data.sensitivity}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br>
+      <p style="font-weight:bold; font-size:10pt">{{'GAIN.param_digital' | translate}}</p>
+      <div class="fixedTable">
+        <table>
+          <tbody>
+            <tr>
+              <td style="font-weight:bold">{{'GAIN.system' | translate}}</td>
+              <td style="font-weight:bold">{{data.f_n * data.nr_sensor}} N</td>
+            </tr>
+            <tr>
+              <td style="font-weight:bold">{{'GAIN.gain_value' | translate}}</td>
+              <td style="font-weight:bold" *ngIf="data.sensor_05" class="tooltip-container">
+                <table>
+                  <tr>
+                    <td>{{'GAIN.standard' | translate}} &nbsp;&nbsp;
+                      <span class="iconHover sortIcon" ngbTooltip="EMGZ309/310/321, EMGZ491/492" placement="bottom">
+                        <span class="icon">
+                          <img class="activeIcon" src="/assets/img/icons/active/icon_help.svg" alt="help icon">
+                          <img class="defaultIcon" src="/assets/img/icons/default/icon_help.svg" alt="help icon">
+                        </span>
+                      </span>
+                    </td>
+                    <td>{{'GAIN.v05' | translate}} &nbsp;&nbsp;
+                      <span class="iconHover sortIcon" ngbTooltip="EMGZ310.V05, EMGZ491/492.V05"
+                      placement="bottom">
+                        <span class="icon">
+                          <img class="activeIcon" src="/assets/img/icons/active/icon_help.svg" alt="help icon">
+                          <img class="defaultIcon" src="/assets/img/icons/default/icon_help.svg" alt="help icon">
+                        </span>
+                      </span>
+
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{{data.digital_gain.toFixed(4)}}</td>
+                    <td>{{data.digital_gain_05.toFixed(4)}}</td>
+                  </tr>
+                </table>
+              </td>
+              <td *ngIf="!data.sensor_05" style="font-weight:bold">{{data.digital_gain.toFixed(4)}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:8pt">{{'GAIN.meaning_309' | translate}}</p>
+      <p style="font-size:8pt">{{'GAIN.meaning_49x' | translate}}</p>
+
+
+      <div *ngIf="100/data.f_n*data.fmr_max >= 50 || 100/data.f_n*data.fmr_max < -50">
+        <br>
+        <p style="font-weight:bold; font-size:10pt">{{'GAIN.param_analog' | translate}}</p>
+        {{'GAIN.desired_force' | translate}} <input type="number" id="force_full" [(ngModel)]="force_full"
+        (ngModelChange)="calculate_gain_analog(voltage_full, force_full)" focus-focus> {{selected_system_factor('N')}} @
+        <input type="number" id="voltage_full" [(ngModel)]="voltage_full"
+        (ngModelChange)="calculate_gain_analog(voltage_full, force_full)" focus-focus> V
+        <br>
+        <div class="fixedTable">
+          <table>
+            <tbody>
+              <tr>
+                <td style="font-weight:bold">{{'GAIN.voltage' | translate}}</td>
+                <td style="font-weight:bold">{{ (gain$ | async)?.analog_gain?.toFixed(3) }} V</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="mt20">&copy; FMS Force Measuring Systems AG</p>
+
+  </div>

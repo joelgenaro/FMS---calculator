@@ -1,0 +1,214 @@
+<div class="container">
+  <div class="twoColumn clearAfter forceCalculator">
+    <div class="column size40">
+      <form [formGroup]="form">
+        <div class="group">
+          <div class="groupName pb10">
+            <span>{{'FORCES.max_material_tension' | translate}}</span>
+          </div>
+          <div class="field rightInfo" [ngClass]="{'errorMsg': form.hasError('fb_max')}">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" formControlName="max_material_tension_type" value="fb">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>FB</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" id="maxFB" formControlName="fb_max" appBtn appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'N' }}</span>
+            <div class="clear"></div>
+            <p *ngIf="form.hasError('fb_max')" class="validationStyle">
+              {{'FORCES.fmr_min_bigger_fmr_max' | translate}}
+            </p>
+          </div>
+          <div class="field rightInfo" [ngClass]="{'errorMsg': form.hasError('mat_tension_width_max')}">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" formControlName="max_material_tension_type" value="width">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>{{'FORCES.tension_width' | translate}}</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" id="mat_tension_width_max" formControlName="mat_tension_width_max" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'N/mm' }}</span>
+            <p *ngIf="form.hasError('mat_tension_width_max')" class="validationStyle">
+              {{'FORCES.fmr_min_bigger_fmr_max_width' | translate}}</p>
+          </div>
+          <div class="field rightInfo">
+            <label class="label">{{'FORCES.material_width' | translate}}</label>
+            <input type="number" id="mat_width_max" formControlName="mat_width_max" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'mm'}}</span>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="groupName pb10">
+            <span>{{'FORCES.min_material_tension_optional' | translate}}</span>
+          </div>
+          <div class="field rightInfo" [ngClass]="{'errorMsg': form.hasError('fb_max')}">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" formControlName="min_material_tension_type" value="fb">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>FB</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" id="fb_min" formControlName="fb_min" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'N' }}</span>
+            <p *ngIf="form.hasError('fb_max')" class="validationStyle">
+              {{'FORCES.fmr_min_bigger_fmr_max' | translate}}
+            </p>
+          </div>
+          <div class="field rightInfo" [ngClass]="{'errorMsg': form.hasError('mat_tension_width_max')}">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" formControlName="min_material_tension_type" value="width">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>{{'FORCES.tension_width' | translate}}</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" id="mat_tension_width_min" formControlName="mat_tension_width_min" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'N/mm' }}</span>
+            <p *ngIf="form.hasError('mat_tension_width_max')" class="validationStyle">
+              {{'FORCES.fmr_min_bigger_fmr_max_width' | translate}}</p>
+          </div>
+          <div class="field rightInfo">
+            <label class="label">{{'FORCES.material_width' | translate}}</label>
+            <input type="number" id="mat_width_min" formControlName="mat_width_min" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'mm' }}</span>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="groupName pb10">
+            <span>{{'FORCES.roller_weight' | translate}}
+              <span class="iconHover sortIcon" *ngIf="language === 'locale-en_EN'" placement="bottom"
+                ngbTooltip="If the sensor contains an integrated roller, the type specific roller weight will be used.">
+                <span class="icon">
+                  <img class="activeIcon" src="/assets/img/icons/active/icon_help.svg" alt="help icon">
+                  <img class="defaultIcon" src="/assets/img/icons/default/icon_help.svg" alt="help icon">
+                </span>
+              </span>
+              <span class="iconHover sortIcon" *ngIf="language === 'locale-de_DE'" placement="bottom"
+                ngbTooltip="Falls der Aufnehmer eine integrierte Walze hat, wird automatisch das hinterlegte Walzengewicht verwendet.">
+                <span class="icon">
+                  <img class="activeIcon" src="/assets/img/icons/active/icon_help.svg" alt="help icon">
+                  <img class="defaultIcon" src="/assets/img/icons/default/icon_help.svg" alt="help icon">
+                </span>
+              </span>
+            </span>
+          </div>
+          <div class="field rightInfo" *ngIf="units !== 1">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" formControlName="roller_weight_type" value="m">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>m</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" formControlName="weight" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'kg' }}</span>
+          </div>
+          <div class="field rightInfo">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" formControlName="roller_weight_type" value="fg">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>FG</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" formControlName="force" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'N' }}</span>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="groupName pb10">
+            <span>{{'FORCES.process_speed' | translate}}</span>
+          </div>
+          <div class="field rightInfo">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" value="material" formControlName="process_speed_type">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>{{'FORCES.material_speed' | translate}}</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" formControlName="material_speed" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'm/min' }}</span>
+          </div>
+          <div class="field rightInfo">
+            <label class="label">{{'FORCES.roller_diameter' | translate}}</label>
+            <input type="number" formControlName="roller_diameter" four-decimal appFocus>
+            <span class="inputInfo">{{ units | selectedSystemFactor: 'mm' }}</span>
+          </div>
+          <div class="field rightInfo">
+            <label class="label">
+              <div class="radioStyle">
+                <label>
+                  <input type="radio" value="revolution" formControlName="process_speed_type">
+                  <span class="checkIcon"></span>
+                  <span class="checkLabel"><strong>{{'FORCES.revolution_speed' | translate}}</strong></span>
+                </label>
+              </div>
+            </label>
+            <input type="number" formControlName="revolution_speed" four-decimal appFocus>
+            <span class="inputInfo">1/min</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="column">
+      <div class="field">
+        <p class="red">FMmax = {{ forces.f_max.toFixed(2)  + ' ' + (units | selectedSystemFactor: 'N') }}</p>
+        <p class="red">FMmin = {{ forces.f_min.toFixed(2)  + ' ' + (units | selectedSystemFactor: 'N') }}</p>
+      </div>
+      <a *ngIf="form.hasError('fb_max')" class="chartWarning" (click)="openWarningModal(warningContent)">
+        <span class="icon flash">
+          <img class="defaultIcon" width="80" src="/assets/img/icons/default/icon_warning.svg" alt="help icon">
+        </span>
+      </a>
+    </div>
+
+    <div class="column size60">
+      <div class="field img text-center pt0">
+        <app-angles-canvas-drawing style="display: block; margin-top: -155px;" [forces]="forces" [parent]="angles" [width]="600" [height]="600" [selectedSensor]="selectedSensor" [sensorOrientation]="selectedOrientation" [canControlAnglesFB1FB2]="true" (drawingEmitted)="setCanvasDrawing($event)"></app-angles-canvas-drawing>
+      </div>
+    </div>
+  </div>
+  <ng-template #warningContent let-d="dismiss">
+    <div class="dialogStyle w550">
+      <div class="dialogTitle">
+        <span>Warning Messages</span>
+        <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="dialogInfo text-left red clearAfter">
+        <p>{{'FORCES.fmr_min_bigger_fmr_max' | translate}}</p>
+        <div class="float-right mt-3">
+          <button type="button" class="btn dark mb-4 login-button"
+            (click)="d('cancel')">{{ 'BUTTONS.cancel' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <div class="pageNav text-right">
+    <a class="btn primary ml20" (click)="openTab(FMSTab.SensorTypes, 'tab')">{{'BUTTONS.continue' | translate}}</a>
+  </div>
+</div>

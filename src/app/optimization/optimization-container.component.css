@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  max-width: 1440px;
+  margin: auto;
+  padding-left: 50px;
+  padding-right: 30px;
+}
+
+.continue-button {
+  margin-left: 20px;
+}
+
+.header-actions-wrapper {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.header-actions-wrapper .btn {
+  min-width: auto;
+  flex: 1 1 auto;
+}
+
+.header-actions-wrapper .btn+.btn {
+  margin-left: 2px;
+}
+
+.buttons {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.buttons button+button {
+  margin-left: 15px;
+}
+
+.buttons.flex button {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.checkStyle {
+  padding: 50px;
+}
